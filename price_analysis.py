@@ -37,6 +37,8 @@ def analysis(Closes):
         
     ## MACD (9,12,26)
     MACD= [0] * (len(Closes)-26)
+    DIF= [0] * (len(Closes)-26)
+    HIS= [0] * (len(Closes)-26)
     
     for i in range(0,len(Closes)-26):
         ii = len(Closes)-26-i-2
@@ -48,18 +50,19 @@ def analysis(Closes):
         EMAn = (EMAn_1 * (12-1) + Closes[ii] * 2) / (12+1)
         EMAm = (EMAm_1 * (26-1) + Closes[ii] * 2) / (26+1)
 
-        DIF = EMAn - EMAm
+        DIF[ii] = EMAn - EMAm
         
         if i == 0:  # fist MACD value
-            MACD_1 = DIF
-        MACD[ii] = (MACD_1 * (9-1) + DIF * 2) / (9+1)
+            MACD_1 = DIF[ii]
+        MACD[ii] = (MACD_1 * (9-1) + DIF[ii] * 2) / (9+1)
+        HIS[ii] = DIF[ii] - MACD[ii]
         
         # for next loop
         EMAn_1 = EMAn
         EMAm_1 = EMAm
         MACD_1 = MACD[ii]
     
-    print(MACD)
-    return Changes, RSI, MACD
+    print(HIS)
+    return Changes, RSI, DIF, MACD, HIS
 # if __name__ == "__main__":
     
