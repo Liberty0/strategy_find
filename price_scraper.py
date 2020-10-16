@@ -19,6 +19,8 @@ def price_scraper():
     
     Dates_str = []
     Closes = []
+    High =[]
+    Low =[]
     
     # retrive date & prices data
     Dates_span = soup.findAll(class_="Py(10px) Ta(start) Pend(10px)")
@@ -36,10 +38,14 @@ def price_scraper():
         if (i % 6)==3:
             # transfer string to num
             Closes.append(locale.atof(Nums_td[i].get_text()))
+        elif (i%6)==1:
+            High.append(locale.atof(Nums_td[i].get_text()))
+        elif (i%6) ==2:
+            Low.append(locale.atof(Nums_td[i].get_text()))
             
     # print result
     
-    return Dates_str, Closes
+    return Dates_str, Closes, High, Low
 
 
 if __name__ == "__main__":
