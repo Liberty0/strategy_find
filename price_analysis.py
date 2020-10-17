@@ -63,69 +63,69 @@ def analysis(Closes, High, Low):
     
     
     ## DMI (14,14)
-    DX = [0] * (len(Closes)-14)
-    ADX = [0] * (len(Closes)-14)
-    pDI = [0] * (len(Closes)-14)
-    mDI = [0] * (len(Closes)-14)
-    pDM = [0] * (len(Closes)-14)
-    mDM = [0] * (len(Closes)-14)
-    pADM = [0] * (len(Closes)-14)
-    mADM = [0] * (len(Closes)-14)
-    TR = [0] * (len(Closes)-14)
-    ATR = [0] * (len(Closes)-14)
-        
-    for i in range(0,len(Closes)-14):
-        ii = len(Closes)-14-i-1
-        
-        pDM[ii] = High[ii] - High[ii+1]
-        if pDM[ii] < 0:
-            pDM[ii] = 0
-        mDM[ii] = Low[ii+1] - Low[ii]
-        if mDM[ii] < 0:
-            mDM[ii] = 0
-        
-        if pDM[ii] > mDM[ii]:
-            mDM[ii] = 0
-        elif mDM[ii] > pDM[ii]:
-            pDM[ii] = 0
-        elif pDM[ii] == mDM[ii]:
-            pDM[ii] = 0
-            mDM[ii] = 0
-        
-        TR[ii] = max(High[ii]-Low[ii],
-                     abs(High[ii]-Closes[ii+1]),
-                     abs(Low[ii]-Closes[ii+1])
-                     )
+    ADX = [0] * (len(Closes)-1)
+    pDI = [0] * (len(Closes)-1)
+    mDI = [0] * (len(Closes)-1)
         
     # print(pDM)
-    for i in range(0,len(Closes)-15):
-        ii = len(Closes)-15-i-1
+    for i in range(0,len(Closes)-2):
+        ii = len(Closes)-2-i-1
+        
+        pDM = High[ii] - High[ii+1]
+        mDM = Low[ii+1] - Low[ii]
+        
         
         if i == 0:
+            pDM_1 = max(High[ii+1] - High[ii+2],0)
+            mDM_1 = max(Low[ii+2] - Low[ii+1],0)
+            if pDM_1 > mDM_1:
+                mDM_1 = 0
+            elif pDM_1 < mDM_1:
+                pDM_1 = 0
+            else:
+                pDM_1 = 0
+                mDM_1 = 0
+            TR_1 = max(High[ii+1]-Low[ii+1],
+                 abs(High[ii+1]-Closes[ii+2]),
+                 abs(Low[ii+1]-Closes[ii+2])
+                 )            
+            pADM_1 = pDM_1
+            mADM_1 = mDM_1
+            ATR_1 = TR_1
             
-            pADM[ii] = pDM[ii]
-            mADM[ii] = mDM[ii]
-            ATR[ii] = TR[ii]
+        pDM = max(High[ii] - High[ii+1],0)
+        mDM = max(Low[ii+1] - Low[ii],0)
+        if pDM > mDM:
+            mDM = 0
+        elif pDM < mDM:
+            pDM = 0
         else:
-            pADM[ii] = pADM[ii+1] + (pDM[ii]-pADM[ii+1])/14
-            mADM[ii] = mADM[ii+1] + (mDM[ii]-mADM[ii+1])/14
-            ATR[ii] = ATR[ii+1] + (TR[ii]-ATR[ii+1])/14
-            
-        pDI[ii] = pADM[ii]/ATR[ii]*100
-        mDI[ii] = mADM[ii]/ATR[ii]*100
-        
-        if (pDI[ii] + mDI[ii]) == 0:
-            DX[ii] = 0
+            pDM = 0
+            mDM = 0
+        TR = max(High[ii]-Low[ii],
+             abs(High[ii]-Closes[ii+1]),
+             abs(Low[ii]-Closes[ii+1])
+             )
+        pADM = pADM_1 + (pDM - pADM_1)/14
+        mADM = mADM_1 + (mDM - mADM_1)/14
+        ATR = ATR_1 + (TR - ATR_1)/14
+        pDI[ii] = pADM / ATR*100
+        mDI[ii] = mADM / ATR*100
+        if (pDI[ii]+mDI[ii]) == 0:
+            DX = 0
         else:
-            DX[ii] = abs(pDI[ii]-mDI[ii])/(pDI[ii]+mDI[ii])*100
+            DX = abs(pDI[ii]-mDI[ii])/(pDI[ii]+mDI[ii])*100
             
-    for i in range(0,len(Closes)-16):
-        ii = len(Closes)-16-i-1
-        
         if i == 0:
-            ADX[ii] = DX[ii]
+            ADX[ii] = DX
         else:
-            ADX[ii] = ADX[ii+1] + (DX[ii]-ADX[ii+1])/14
+            ADX[ii] = ADX[ii+1] + (DX - ADX[ii+1])/14
+        
+        pADM_1 = pADM
+        mADM_1 = mADM
+        ATR_1 = ATR
+                   
+    print(ADX)
         
             
     return Changes, RSI, DIF, MACD, HIS, pDI, mDI, ADX
