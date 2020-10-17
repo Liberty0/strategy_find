@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-def price_scraper():
+def price_scraper(Market,Code):
     
     import requests 
     from bs4 import BeautifulSoup
@@ -10,7 +10,13 @@ def price_scraper():
     locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
     
     # scrap data
-    URL = 'https://finance.yahoo.com/quote/GOOG/history?p=GOOG'
+    if Market == "US":
+        URL = 'https://finance.yahoo.com/quote/GOOG/history?p='+Code
+    elif Market == "TW":
+        URL = 'https://tw.stock.yahoo.com/q/ts?s='+ Code +'&t=50'
+    else:
+        print('Invalid "Market"')
+        return -1
     headers = {"User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36'}
     
     page = requests.get(URL, headers=headers)

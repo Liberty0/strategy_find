@@ -125,8 +125,7 @@ def analysis(Closes, High, Low):
         mADM_1 = mADM
         ATR_1 = ATR
                    
-    print(ADX)
-        
+    # print(ADX)
             
     return Changes, RSI, DIF, MACD, HIS, pDI, mDI, ADX
 # if __name__ == "__main__":

@@ -5,7 +5,13 @@ import price_analysis as ana
 import matplotlib
 # import price_change as chg
 
-date_price = scr.price_scraper()
+## Inputs
+Market = "TW" # TW or US
+Code = "2330"
+Tick = "D" # m: minuts; H: hour; D: day; 
+
+
+date_price = scr.price_scraper(Market, Code)
 
 Dates_str = date_price[0]
 Closes = date_price[1]
