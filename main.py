@@ -6,8 +6,8 @@ import matplotlib
 # import price_change as chg
 
 ## Inputs
-Market = "TW" # TW or US
-Code = "2330"
+Market = "US" # TW or US
+Code = "GOOG"
 Tick = "D" # m: minuts; H: hour; D: day; 
 
 
