@@ -30,26 +30,26 @@ def price_scraper(Market='TW',Code='2330',Tick='5m'):
             valuesplit = itemsplit[j].split(',')
             if j == 1:
                 Dates_str.append(valuesplit[0])
-                if Tick == 'd':
+                if Tick=='d' or Tick=='w' or Tick=='m':
                     Dates.append(datetime.strptime(valuesplit[0],"%Y%m%d"))
-                elif Tick == '5m':
+                elif Tick=='5m' or Tick=='10m' or Tick=='30m':
                     Dates.append(datetime.strptime(valuesplit[0],"%Y%m%d%H%M"))
                 
             elif j == 5:
-                Closes.append(valuesplit[0])
+                Closes.append(locale.atof(valuesplit[0]))
             elif j == 3:
-                High.append(valuesplit[0])
+                High.append(locale.atof(valuesplit[0]))
             elif j == 4:
-                Low.append(valuesplit[0])  
+                Low.append(locale.atof(valuesplit[0])) 
             # print(itemsplit[j].split(','))
     
     # print(Dates)
     
     fig, ax = matplotlib.pyplot.subplots()
     ax.plot(Dates,Closes)
-    if Tick == 'd':
+    if Tick=='d' or Tick=='w' or Tick=='m':
         ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
-    elif Tick == '5m':
+    elif Tick=='5m' or Tick=='10m' or Tick=='30m':
         ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
     
     fig2 = matplotlib.pyplot.figure()  
