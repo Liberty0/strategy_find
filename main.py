@@ -11,7 +11,7 @@ Code = "2330"
 Tick = "d" # m: minuts; H: hour; D: day; 
 
 
-date_price = scr.price_scraper(Market, Code)
+date_price = scr.price_scraper(Market, Code, Tick)
 
 
 Dates = date_price[0]
@@ -30,7 +30,6 @@ mDI = analysis[6]
 ADX = analysis[7]
 
 
-
 fig1 = matplotlib.pyplot.figure()
 ax1 = fig1.add_subplot(211)
 if Tick=='d' or Tick=='w' or Tick=='m':
@@ -41,7 +40,7 @@ elif Tick=='5m' or Tick=='10m' or Tick=='30m':
     # ax1.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
 ax2 = fig1.add_subplot(212)
 if Tick=='d' or Tick=='w' or Tick=='m':
-    ax2.plot(Dates[0:len(RSI)],RSI,'-')
+    ax2.plot(Dates[(len(Dates)-1-len(RSI)):(len(Dates)-1)],RSI,'-')
     ax2.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
 elif Tick=='5m' or Tick=='10m' or Tick=='30m':
     ax2.plot(RSI,'-')
@@ -50,9 +49,9 @@ elif Tick=='5m' or Tick=='10m' or Tick=='30m':
 fig2 = matplotlib.pyplot.figure()
 ax3 = fig2.add_subplot(211)
 if Tick=='d' or Tick=='w' or Tick=='m':
-    ax3.plot(Dates[0:len(DIF)],DIF,'-')
-    ax3.plot(Dates[0:len(MACD)],MACD,'-')
-    ax3.bar(Dates[0:len(HIS)],HIS,width=0.4)
+    ax3.plot(Dates[(len(Dates)-1-len(DIF)):(len(Dates)-1)],DIF,'-')
+    ax3.plot(Dates[(len(Dates)-1-len(MACD)):(len(Dates)-1)],MACD,'-')
+    ax3.bar(Dates[(len(Dates)-1-len(HIS)):(len(Dates)-1)],HIS,width=0.4)
     ax3.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
 elif Tick=='5m' or Tick=='10m' or Tick=='30m':
     ax3.plot(DIF,'-')
@@ -62,9 +61,9 @@ elif Tick=='5m' or Tick=='10m' or Tick=='30m':
 ax4 = fig2.add_subplot(212)
 
 if Tick=='d' or Tick=='w' or Tick=='m':
-    ax4.plot(Dates[0:len(pDI)],pDI,'-')
-    ax4.plot(Dates[0:len(mDI)],mDI,'-')
-    ax4.plot(Dates[0:len(ADX)],ADX,'-')
+    ax4.plot(Dates[(len(Dates)-1-len(pDI)):(len(Dates)-1)],pDI,'-')
+    ax4.plot(Dates[(len(Dates)-1-len(mDI)):(len(Dates)-1)],mDI,'-')
+    ax4.plot(Dates[(len(Dates)-1-len(ADX)):(len(Dates)-1)],ADX,'-')
     ax4.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
 elif Tick=='5m' or Tick=='10m' or Tick=='30m':
     ax4.plot(pDI,'-')
