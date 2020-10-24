@@ -12,20 +12,10 @@ Tick = "d" # [5m 10m 30m d w m]
 
 date_price = scr.price_scraper(Market, Code, Tick)
 Closes = date_price[1]
-High = date_price[2]
-Low = date_price[3]
 
-analysis = ana.analysis(Closes, High, Low)
-RSI = analysis[1]
-# DIF = analysis[2]
-# MACD = analysis[3]
-# HIS = analysis[4]
-# pDI = analysis[5]
-# mDI = analysis[6]
-# ADX = analysis[7]
+analysis = ana.analysis(date_price)
 
-Inv_result = inv.invest(Closes, RSI)
+Inv_result = inv.invest(Closes, analysis)
 
 plotter.plotter(Tick,date_price,analysis,Inv_result)
-
 

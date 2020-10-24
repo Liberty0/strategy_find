@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-def analysis(Closes, High, Low):
+def analysis(date_price):
+    # Dates = date_price[0]
+    Closes = date_price[1]
+    High = date_price[2]
+    Low = date_price[3]
+    
     Changes = []
     for i in range(0,len(Closes)-1):
         Changes.append(round(Closes[i+1]-Closes[i],2))

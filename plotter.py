@@ -54,9 +54,12 @@ def plotter(Tick,date_price,analysis,Inv_result):
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
         ax3.plot(DIF,'-')
         ax3.plot(MACD,'-')
-        if Tick == '5m':
+        if (Tick == '5m') or (Tick == '10m'):
             HISwidth = 0.5
-        ax3.bar(np.linspace(1,len(HIS),len(HIS)),HIS,width=HISwidth)
+        elif Tick == '30m':
+            HISwidth = 1
+        ax31 = ax3.twinx()
+        ax31.bar(np.linspace(1,len(HIS),len(HIS)),HIS,width=HISwidth)
         # ax3.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
     ax4 = fig1.add_subplot(414)
     if Tick=='d' or Tick=='w' or Tick=='m':
