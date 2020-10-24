@@ -38,31 +38,40 @@ def analysis(Closes, High, Low):
     ## MACD (9,12,26)
     # Close 0123456789
     # DIF(3) (2)3456789
-    # MACD
-    MACD= [0] * (len(Closes)-26)
+    # MACD(3) (5)6789
     DIF= [0] * (len(Closes)-26)
-    HIS= [0] * (len(Closes)-26)
+    MACD= [0] * (len(Closes)-26-9)
+    HIS= [0] * (len(Closes)-26-9)
     
     for i in range(0,len(Closes)-26):
         ii = i + 26
         
         if i == 0:  # first EMA value
-            EMAn_1 = sum(Closes[(ii-12):(ii-1)])/12
-            EMAm_1 = sum(Closes[(ii-26):(ii-1)])/26
+            #[note] the range [0:3] actually call [0,1,2]
+            EMAn_1 = sum(Closes[(ii-12):(ii)])/12
+            EMAm_1 = sum(Closes[(ii-26):(ii)])/26
             
         EMAn = (EMAn_1 * (12-1) + Closes[ii] * 2) / (12+1)
         EMAm = (EMAm_1 * (26-1) + Closes[ii] * 2) / (26+1)
 
         DIF[i] = EMAn - EMAm
         
-        if i == 0:  # fist MACD value
-            MACD[i] = DIF[i]
-        MACD[i] = (MACD[i-1] * (9-1) + DIF[i] * 2) / (9+1)
-        HIS[i] = DIF[i] - MACD[i]
-        
         # for next loop
         EMAn_1 = EMAn
-        EMAm_1 = EMAm
+        EMAm_1 = EMAm        
+        
+    for i in range(0,len(MACD)):
+        ii = i + 9
+        
+        if i == 0:  # fist MACD value
+            MACD_1 = sum(DIF[(ii-9):(ii)])/9
+            
+        MACD[i] = (MACD_1 * (9-1) + DIF[ii] * 2) / (9+1)
+        HIS[i] = DIF[ii] - MACD[i]
+        
+        # for next loop
+        MACD_1 = MACD[i]
+        
     
     ## DMI (14,14)
     # Close 0123456789
@@ -128,9 +137,6 @@ def analysis(Closes, High, Low):
             ADX[i] = sum(DX[(ii-13):ii])/14
         else:
             ADX[i] = ADX[i-1] + (DX[ii] - ADX[i-1])/14
-    print(ADX)
-                   
-    # print(ADX)
             
     return Changes, RSI, DIF, MACD, HIS, pDI, mDI, ADX
 # if __name__ == "__main__":

@@ -6,9 +6,9 @@ import matplotlib
 import numpy as np
 
 ## Inputs
-Market = "TW" # TW or US
-Code = "2330"
-Tick = "d" # m: minuts; H: hour; D: day; 
+Market = "US" # TW or US
+Code = "GOOG"
+Tick = "d" # [5m 10m 30m d w m]
 
 
 date_price = scr.price_scraper(Market, Code, Tick)
@@ -51,12 +51,20 @@ ax3 = fig2.add_subplot(211)
 if Tick=='d' or Tick=='w' or Tick=='m':
     ax3.plot(Dates[(len(Dates)-1-len(DIF)):(len(Dates)-1)],DIF,'-')
     ax3.plot(Dates[(len(Dates)-1-len(MACD)):(len(Dates)-1)],MACD,'-')
-    ax3.bar(Dates[(len(Dates)-1-len(HIS)):(len(Dates)-1)],HIS,width=0.4)
+    if Tick == 'd':
+        HISwidth = .5
+    elif Tick == 'w':
+        HISwidth = 3
+    elif Tick == 'm':
+        HISwidth = 13
+    ax3.bar(Dates[(len(Dates)-1-len(HIS)):(len(Dates)-1)],HIS,width=HISwidth)
     ax3.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
 elif Tick=='5m' or Tick=='10m' or Tick=='30m':
     ax3.plot(DIF,'-')
     ax3.plot(MACD,'-')
-    ax3.bar(np.linspace(1,len(HIS),len(HIS)),HIS,width=0.5)
+    if Tick == '5m':
+        HISwidth = 0.5
+    ax3.bar(np.linspace(1,len(HIS),len(HIS)),HIS,width=HISwidth)
     # ax3.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
 ax4 = fig2.add_subplot(212)
 
