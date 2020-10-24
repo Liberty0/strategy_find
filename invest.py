@@ -3,7 +3,7 @@
 def invest(Closes,RSI):
     
     inv_gauge = 0
-    inv_rate = 50 / 100
+    inv_rate = 25 / 100
     
     ini_balance = 100000
     Cash = [ini_balance] * min(len(Closes),len(RSI))
@@ -30,6 +30,9 @@ def invest(Closes,RSI):
             sellaoumt = Inved_amount[i-1] * inv_rate
             Cash[i] = Cash[i-1] + sellaoumt*Closes[Cls_i]
             Inved_amount[i] = Inved_amount[i-1] - sellaoumt
+        else:
+            Cash[i] = Cash[i-1]
+            Inved_amount[i] = Inved_amount[i-1]
             
         Inved_value[i] = Inved_amount[i] * Closes[Cls_i]
         Balance[i] = Cash[i] + Inved_value[i]

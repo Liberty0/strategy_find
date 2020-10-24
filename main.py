@@ -9,7 +9,7 @@ import numpy as np
 ## Inputs
 Market = "TW" # TW or US
 Code = "0056"
-Tick = "w" # [5m 10m 30m d w m]
+Tick = "d" # [5m 10m 30m d w m]
 
 date_price = scr.price_scraper(Market, Code, Tick)
 Dates = date_price[0]
@@ -82,8 +82,8 @@ elif Tick=='5m' or Tick=='10m' or Tick=='30m':
     
 fig3 = matplotlib.pyplot.figure()
 ax5 = fig3.add_subplot(111)
+ax5.plot(Dates[(len(Dates)-1-len(Inved_value)):(len(Dates)-1)],Inved_value,'-')
+ax5.plot(Dates[(len(Dates)-1-len(Cash)):(len(Dates)-1)],Cash,'-')
 ax5.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Balance,'-')
-# ax5.plot(Dates[(len(Dates)-1-len(Inved_value)):(len(Dates)-1)],Inved_value,'-')
-# ax5.plot(Dates[(len(Dates)-1-len(Cash)):(len(Dates)-1)],Cash,'-')
     
 # matplotlib.pyplot.plot_date(Dates,Closes)
