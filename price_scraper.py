@@ -13,6 +13,7 @@ def price_scraper(Market='TW',Code='2330',Tick='5m'):
     if Market == "US":
         URL = 'https://finance.yahoo.com/quote/GOOG/history?p='+Code
     elif Market == "TW":
+        # https://tw.quote.finance.yahoo.net/quote/q?type=ta&perd=5m&mkt=10&sym=2330&v=1
         URL = 'https://tw.quote.finance.yahoo.net/quote/q?type=ta&perd='+ Tick +'&mkt=10&sym='+ Code +'&v=1'
     else:
         print('Invalid "Market"')
