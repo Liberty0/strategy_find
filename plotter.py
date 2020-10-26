@@ -57,7 +57,7 @@ def plotter(Tick,date_price,analysis,Inv_result):
         if (Tick == '5m') or (Tick == '10m'):
             HISwidth = 0.5
         elif Tick == '30m':
-            HISwidth = 1
+            HISwidth = .7
         ax31 = ax3.twinx()
         ax31.bar(np.linspace(1,len(HIS),len(HIS)),HIS,width=HISwidth)
         # ax3.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
@@ -75,9 +75,14 @@ def plotter(Tick,date_price,analysis,Inv_result):
         
     fig3 = matplotlib.pyplot.figure()
     ax5 = fig3.add_subplot(211)
-    ax5.plot(Dates[(len(Dates)-1-len(Inved_value)):(len(Dates)-1)],Inved_value,'-')
-    ax5.plot(Dates[(len(Dates)-1-len(Cash)):(len(Dates)-1)],Cash,'-')
-    ax5.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Balance,'-')
+    if Tick=='d' or Tick=='w' or Tick=='m':
+        ax5.plot(Dates[(len(Dates)-1-len(Inved_value)):(len(Dates)-1)],Inved_value,'-')
+        ax5.plot(Dates[(len(Dates)-1-len(Cash)):(len(Dates)-1)],Cash,'-')
+        ax5.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Balance,'-')
+    elif Tick=='5m' or Tick=='10m' or Tick=='30m':
+        ax5.plot(Inved_value,'-')
+        ax5.plot(Cash,'-')
+        ax5.plot(Balance,'-')
     
     Closes_rate = [0] * len(Closes)
     Balance_rate = [0] * len(Balance)
@@ -86,8 +91,13 @@ def plotter(Tick,date_price,analysis,Inv_result):
     for i in range(0,len(Balance)):
         Balance_rate[i] = Balance[i] / Balance[0]
     ax6 = fig3.add_subplot(212)
-    ax6.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Closes_rate[(len(Dates)-1-len(Balance)):(len(Dates)-1)],'C0-',label='Close')
-    ax6.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Balance_rate,'C1-',label='Balance')
+    if Tick=='d' or Tick=='w' or Tick=='m':
+        ax6.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Closes_rate[(len(Dates)-1-len(Balance)):(len(Dates)-1)],'C0-',label='Close')
+        ax6.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Balance_rate,'C1-',label='Balance')
+    elif Tick=='5m' or Tick=='10m' or Tick=='30m':
+        ax6.plot(Closes_rate[(len(Dates)-1-len(Balance)):(len(Dates)-1)],'C0-',label='Close')
+        ax6.plot(Balance_rate,'C1-',label='Balance')
+
     ax6.legend()
     # print(Closes[len(Closes)-1])
         

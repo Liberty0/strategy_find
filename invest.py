@@ -13,8 +13,8 @@ def invest(Closes,analysis):
     rsi_weight = 5
     macd_weight = 3
     adx_weight = 3
-    inv_gauge = 1.5
-    inv_rate = 25 / 100
+    inv_gauge = 4
+    inv_rate = 30 / 100
     
     ini_balance = 100000
     Cash = [ini_balance] * min(len(Closes),len(RSI),len(HIS),len(ADX))
