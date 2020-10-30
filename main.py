@@ -7,13 +7,12 @@ import plotter
 
 ## Inputs
 Market = "TW" # TW or US
-Code = "0050"
-
-Tick = "d" # [5m 10m 30m d w m]
+Code = "2330"
+Tick = "30m" # [5m 10m 30m d w m]
 Length = -1
+# Inv_setting
 
 date_price = scr.price_scraper(Market, Code, Tick, Length)
-
 Closes = date_price[1]
 
 analysis = ana.analysis(date_price)

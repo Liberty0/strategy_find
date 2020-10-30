@@ -4,7 +4,7 @@ def invest(Closes,analysis):
     # Change = analysis[0]
     RSI = analysis[1]
     # DIF = analysis[2]
-    # MACD = analysis[3]
+    MACD = analysis[3]
     HIS = analysis[4]
     pDI = analysis[5]
     mDI = analysis[6]
@@ -13,8 +13,10 @@ def invest(Closes,analysis):
     rsi_weight = 5
     macd_weight = 3
     adx_weight = 3
-    inv_gauge = 4
-    inv_rate = 30 / 100
+    buy_gauge = 1.0
+    sell_gauge = -2
+    
+    inv_rate = 40 / 100
     
     ini_balance = 100000
     Cash = [ini_balance] * min(len(Closes),len(RSI),len(HIS),len(ADX))
@@ -28,22 +30,35 @@ def invest(Closes,analysis):
         
         if i == 1:
             rsigd_1 = 0
-        if RSI[rsi_i] < 40:
+        #　買売超区間 (OverBuy OverSell zone)
+        if RSI[rsi_i]<20:
             rsigd = 1
         elif RSI[rsi_i] > 80:
             rsigd = -1
+        # 鈍化
+        elif max(RSI[(rsi_i-3):rsi_i])<20:
+            rsigd = -1
+        elif min(RSI[(rsi_i-3):rsi_i])>80:
+            rsigd = 1
         else:
             rsigd = rsigd_1
-        rsigd_1 = rsigd * 0.8
+        # rsigd_1 = rsigd * 0.8
         
         # MACD
+        Cls_i = i + (len(Closes) - len(Cash))
         macd_i = i + (len(HIS) - len(Cash))
         
         if i == 1:
             macdgd_1 = 0
-        if (HIS[macd_i]>0) and (HIS[macd_i-1]<0):
+        # 背離
+        if Closes[Cls_i]==max(Closes[0:(Cls_i+1)]) and MACD[macd_i]<MACD[macd_i]:
+            macdgd = -2
+        elif Closes[Cls_i]==min(Closes[0:(Cls_i+1)]) and MACD[macd_i]>MACD[macd_i]:
+            macdgd = 2
+        # 交差
+        elif HIS[macd_i]>0 and HIS[macd_i-1]<0:
             macdgd = 1
-        elif (HIS[macd_i]<0) and (HIS[macd_i-1]>0):
+        elif HIS[macd_i]<0 and HIS[macd_i-1]>0:
             macdgd = -1
         else:
             macdgd = macdgd_1 *0.8
@@ -54,7 +69,7 @@ def invest(Closes,analysis):
         
         if i == 1:
             adxgd_1 = 0
-        if ADX[adx_i]>25:
+        if ADX[adx_i]>25 and ADX[adx_i-1]<25:
             if (pDI[adx_i]-mDI[adx_i]) > 0:
                 adxgd = 1
             elif (pDI[adx_i]-mDI[adx_i]) < 0:
@@ -64,14 +79,14 @@ def invest(Closes,analysis):
         adxgd_1 = adxgd
         
         # investor
-        Cls_i = i + (len(Closes) - len(Cash))
+        # Cls_i = i + (len(Closes) - len(Cash))
         gd = rsigd*rsi_weight + macdgd*macd_weight + adxgd*adx_weight
         
-        if gd > inv_gauge:
+        if gd > buy_gauge:
             buyamout = Cash[i-1] * inv_rate
             Cash[i] = Cash[i-1] - buyamout
             Inved_amount[i] = Inved_amount[i-1] + buyamout/Closes[Cls_i]
-        elif gd < inv_gauge:
+        elif gd < sell_gauge:
             sellaoumt = Inved_amount[i-1] * inv_rate
             Cash[i] = Cash[i-1] + sellaoumt*Closes[Cls_i]
             Inved_amount[i] = Inved_amount[i-1] - sellaoumt
