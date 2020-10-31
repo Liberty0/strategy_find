@@ -11,7 +11,8 @@ def price_scraper(Market='TW',Code='2330',Tick='5m',Length=-1):
     
     # scrap data
     if Market == "US":
-        URL = 'https://finance.yahoo.com/quote/GOOG/history?p='+Code
+        # https://query1.finance.yahoo.com/v8/finance/chart/GOOG?symbol=GOOG&period1=1529852400&period2=1604156132&interval=1d&includePrePost=true&events=div%7Csplit%7Cearn&lang=en-US&region=US&crumb=a8owf8rmWfk&corsDomain=finance.yahoo.com
+        URL = 'https://query1.finance.yahoo.com/v8/finance/chart/'+ Code + '?period1=1529852400&period2=1604156132&interval=1d&includePrePost=true&events=div%7Csplit%7Cearn&lang=en-US&region=US&crumb=a8owf8rmWfk&corsDomain=finance.yahoo.com'
     elif Market == "TW":
         # https://tw.quote.finance.yahoo.net/quote/q?type=ta&perd=5m&mkt=10&sym=2330&v=1
         URL = 'https://tw.quote.finance.yahoo.net/quote/q?type=ta&perd='+ Tick +'&mkt=10&sym='+ Code +'&v=1'
@@ -27,11 +28,15 @@ def price_scraper(Market='TW',Code='2330',Tick='5m',Length=-1):
     High =[]
     Low =[]
     
-    # retrive date & prices data
-    Dates_span = soup.findAll(class_="Py(10px) Ta(start) Pend(10px)")
-    Nums_td = soup.findAll(class_="Py(10px) Pstart(10px)")
     
     if Market == "US":
+        # retrive date & prices data
+        Dates_span = soup.findAll(class_="timestamp")
+        Nums_td = soup.findAll(class_="close")
+        
+        print(Dates_span)
+        return -1
+
         # parse date string
         for i in range(0,len(Dates_span)):
             Dates.append(datetime.strptime(Dates_span[i].get_text(),"%b %d, %Y"))
@@ -49,6 +54,7 @@ def price_scraper(Market='TW',Code='2330',Tick='5m',Length=-1):
                 Low.append(locale.atof(Nums_td[i].get_text()))
                 
     elif Market == "TW":
+
         fulltext = soup.get_text() # datetime, open, high, low, close, variation
         sectionsplit = fulltext.split('[')
         timesplit = sectionsplit[1].split("{")

@@ -40,11 +40,13 @@ def invest(Closes,analysis,Inv_set):
             rsigd = -1
         elif min(RSI[(rsi_i-7):rsi_i])>70:
             rsigd = 1
+        # 背離
+        
         else:
             rsigd = rsigd_1
         # rsigd_1 = rsigd * 0.8
         
-        ## MACD
+        ## MACD (9,12,26)
         Cls_i = i + (len(Closes) - len(Cash))
         macd_i = i + (len(HIS) - len(Cash))
         

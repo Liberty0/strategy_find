@@ -8,7 +8,7 @@ import plotter
 ## Inputs
 Market = "TW" # TW or US
 Code = "0050"
-Tick = "d" # [5m 10m 30m d w m]
+Tick = "30m" # [5m 10m 30m d w m]
 Length = -1
 # Inv_setting
 rsi_weight = 0
