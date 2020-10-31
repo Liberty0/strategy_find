@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-def invest(Closes,analysis):
+def invest(Closes,analysis,Inv_set):
     # Change = analysis[0]
     RSI = analysis[1]
     # DIF = analysis[2]
@@ -10,13 +10,13 @@ def invest(Closes,analysis):
     mDI = analysis[6]
     ADX = analysis[7]
     
-    rsi_weight = 5
-    macd_weight = 3
-    adx_weight = 3
-    buy_gauge = 1.0
-    sell_gauge = -2
+    rsi_weight = Inv_set[0]
+    macd_weight = Inv_set[1]
+    adx_weight = Inv_set[2]
+    buy_gauge = Inv_set[3]
+    sell_gauge = Inv_set[4]
     
-    inv_rate = 40 / 100
+    inv_rate = Inv_set[5]
     
     ini_balance = 100000
     Cash = [ini_balance] * min(len(Closes),len(RSI),len(HIS),len(ADX))
@@ -25,26 +25,26 @@ def invest(Closes,analysis):
     Balance = [ini_balance] * len(Cash)
     
     for i in range(1,len(Cash)):
-        # RSI
+        ## RSI (14)
         rsi_i = i + (len(RSI) - len(Cash))
         
         if i == 1:
             rsigd_1 = 0
         #　買売超区間 (OverBuy OverSell zone)
-        if RSI[rsi_i]<20:
+        if RSI[rsi_i]<30:
             rsigd = 1
-        elif RSI[rsi_i] > 80:
+        elif RSI[rsi_i] > 70:
             rsigd = -1
         # 鈍化
-        elif max(RSI[(rsi_i-3):rsi_i])<20:
+        elif max(RSI[(rsi_i-7):rsi_i])<30:
             rsigd = -1
-        elif min(RSI[(rsi_i-3):rsi_i])>80:
+        elif min(RSI[(rsi_i-7):rsi_i])>70:
             rsigd = 1
         else:
             rsigd = rsigd_1
         # rsigd_1 = rsigd * 0.8
         
-        # MACD
+        ## MACD
         Cls_i = i + (len(Closes) - len(Cash))
         macd_i = i + (len(HIS) - len(Cash))
         
@@ -64,7 +64,7 @@ def invest(Closes,analysis):
             macdgd = macdgd_1 *0.8
         macdgd_1 = macdgd
         
-        # ADX
+        ## ADX
         adx_i = i + (len(ADX) - len(Cash))
         
         if i == 1:
