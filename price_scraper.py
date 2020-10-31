@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-def price_scraper(Market='TW',Code='2330',Tick='5m'):
+def price_scraper(Market='TW',Code='2330',Tick='5m',Length=-1):
     
     import requests 
     from bs4 import BeautifulSoup
@@ -13,6 +13,7 @@ def price_scraper(Market='TW',Code='2330',Tick='5m'):
     if Market == "US":
         URL = 'https://finance.yahoo.com/quote/GOOG/history?p='+Code
     elif Market == "TW":
+        # https://tw.quote.finance.yahoo.net/quote/q?type=ta&perd=5m&mkt=10&sym=2330&v=1
         URL = 'https://tw.quote.finance.yahoo.net/quote/q?type=ta&perd='+ Tick +'&mkt=10&sym='+ Code +'&v=1'
     else:
         print('Invalid "Market"')
@@ -69,19 +70,27 @@ def price_scraper(Market='TW',Code='2330',Tick='5m'):
                     Low.append(locale.atof(valuesplit[0]))
         # print result
     
+    if not Length == -1:
+        Length = min(Length,len(Dates))
+        Dates = Dates[(len(Dates)-Length):len(Dates)]
+        Closes = Closes[(len(Closes)-Length):len(Closes)]
+        
     return Dates, Closes, High, Low
 
 if __name__ == "__main__":
     
     Market = "TW"
     Code = "2330"
-    result = price_scraper(Market,Code)
+    Tick = 'd'
+    Length = 10
+    result = price_scraper(Market,Code,Tick,Length)
     
     print("length of dates:" + str(len(result[0])))
     print("length of close prices:" + str(len(result[1])))
     
     Dates = result[0]
     Closes = result[1]
+    print(Dates)
     
     import matplotlib
     fig, ax = matplotlib.pyplot.subplots()
