@@ -17,6 +17,7 @@ def plotter(Tick,date_price,analysis,Inv_result):
     pDI = analysis[5]
     mDI = analysis[6]
     ADX = analysis[7]
+    MA5 = analysis[8]
     
     Balance = Inv_result[0]
     Cash = Inv_result[1]
@@ -26,17 +27,21 @@ def plotter(Tick,date_price,analysis,Inv_result):
     ax1 = fig1.add_subplot(411)
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax1.plot(Dates,Closes,'-')
+        ax1.plot(Dates[(len(Dates)-1-len(MA5)):(len(Dates)-1)],MA5,'-')
         ax1.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
         ax1.plot(Closes,'-')
+        # x-axis for the following plots
+        x_axis = np.linspace(0,len(Closes),len(Closes)+1)
+        ax1.plot(x_axis[(len(x_axis)-1-len(MA5)):(len(x_axis)-1)],MA5,'-')
         # ax1.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
     ax2 = fig1.add_subplot(412)
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax2.plot(Dates[(len(Dates)-1-len(RSI)):(len(Dates)-1)],RSI,'-')
         ax2.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
-        ax2.plot(RSI,'-')
-        # ax2.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
+        # ax2.plot(RSI,'-')
+        ax2.plot(x_axis[(len(x_axis)-1-len(RSI)):(len(x_axis)-1)],RSI,'-')
     
     # fig2 = matplotlib.pyplot.figure()
     ax3 = fig1.add_subplot(413)
@@ -52,14 +57,14 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax3.bar(Dates[(len(Dates)-1-len(HIS)):(len(Dates)-1)],HIS,width=HISwidth)
         ax3.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
-        ax3.plot(DIF,'-')
-        ax3.plot(MACD,'-')
+        ax3.plot(x_axis[(len(x_axis)-1-len(DIF)):(len(x_axis)-1)],DIF,'-')
+        ax3.plot(x_axis[(len(x_axis)-1-len(MACD)):(len(x_axis)-1)],MACD,'-')
         if (Tick == '5m') or (Tick == '10m'):
             HISwidth = 0.5
         elif Tick == '30m':
             HISwidth = .7
         ax31 = ax3.twinx()
-        ax31.bar(np.linspace(1,len(HIS),len(HIS)),HIS,width=HISwidth)
+        ax31.bar(x_axis[(len(x_axis)-1-len(HIS)):(len(x_axis)-1)],HIS,width=HISwidth)
         # ax3.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
     ax4 = fig1.add_subplot(414)
     if Tick=='d' or Tick=='w' or Tick=='m':
@@ -68,9 +73,9 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax4.plot(Dates[(len(Dates)-1-len(ADX)):(len(Dates)-1)],ADX,'-')
         ax4.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
-        ax4.plot(pDI,'-')
-        ax4.plot(mDI,'-')
-        ax4.plot(ADX,'-')
+        ax4.plot(x_axis[(len(x_axis)-1-len(pDI)):(len(x_axis)-1)],pDI,'-')
+        ax4.plot(x_axis[(len(x_axis)-1-len(mDI)):(len(x_axis)-1)],mDI,'-')
+        ax4.plot(x_axis[(len(x_axis)-1-len(ADX)):(len(x_axis)-1)],ADX,'-')
         # ax4.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
         
     fig3 = matplotlib.pyplot.figure()

@@ -143,6 +143,12 @@ def analysis(date_price):
         else:
             ADX[i] = ADX[i-1] + (DX[ii] - ADX[i-1])/14
             
-    return Changes, RSI, DIF, MACD, HIS, pDI, mDI, ADX
+    MA5 = [0] * (len(Closes)-5)
+    for i in range(0,len(MA5)):
+        ii = i + 5
+        MA5[i] = sum(Closes[(ii-5):ii])/5
+        
+            
+    return Changes, RSI, DIF, MACD, HIS, pDI, mDI, ADX, MA5
 # if __name__ == "__main__":
     
