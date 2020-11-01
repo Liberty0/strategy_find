@@ -18,6 +18,8 @@ def plotter(Tick,date_price,analysis,Inv_result):
     mDI = analysis[6]
     ADX = analysis[7]
     MA5 = analysis[8]
+    MA10= analysis[9]
+    MA20= analysis[10]
     
     Balance = Inv_result[0]
     Cash = Inv_result[1]
@@ -26,14 +28,19 @@ def plotter(Tick,date_price,analysis,Inv_result):
     fig1 = matplotlib.pyplot.figure()
     ax1 = fig1.add_subplot(411)
     if Tick=='d' or Tick=='w' or Tick=='m':
-        ax1.plot(Dates,Closes,'-')
+        ax1.plot(Dates[(len(Dates)-1-len(MA20)):(len(Dates)-1)],MA20,'-')
+        ax1.plot(Dates[(len(Dates)-1-len(MA10)):(len(Dates)-1)],MA10,'-')
         ax1.plot(Dates[(len(Dates)-1-len(MA5)):(len(Dates)-1)],MA5,'-')
+        ax1.plot(Dates,Closes,'-')
         ax1.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
-        ax1.plot(Closes,'-')
+
         # x-axis for the following plots
         x_axis = np.linspace(0,len(Closes),len(Closes)+1)
+        ax1.plot(x_axis[(len(x_axis)-1-len(MA20)):(len(x_axis)-1)],MA20,'-')
+        ax1.plot(x_axis[(len(x_axis)-1-len(MA10)):(len(x_axis)-1)],MA10,'-')
         ax1.plot(x_axis[(len(x_axis)-1-len(MA5)):(len(x_axis)-1)],MA5,'-')
+        ax1.plot(Closes,'-')
         # ax1.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
     ax2 = fig1.add_subplot(412)
     if Tick=='d' or Tick=='w' or Tick=='m':

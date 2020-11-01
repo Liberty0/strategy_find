@@ -148,7 +148,19 @@ def analysis(date_price):
         ii = i + 5
         MA5[i] = sum(Closes[(ii-5):ii])/5
         
+    MA10 = [0] * (len(Closes)-10)
+    for i in range(0,len(MA10)):
+        ii = i + 10
+        MA10[i] = sum(Closes[(ii-10):ii])/10
+        
+    MA20 = [0] * (len(Closes)-20)
+    for i in range(0,len(MA20)):
+        ii = i + 20
+        MA20[i] = sum(Closes[(ii-20):ii])/20
+
+
+        
             
-    return Changes, RSI, DIF, MACD, HIS, pDI, mDI, ADX, MA5
+    return Changes, RSI, DIF, MACD, HIS, pDI, mDI, ADX, MA5, MA10, MA20
 # if __name__ == "__main__":
     
