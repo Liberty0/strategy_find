@@ -2,6 +2,19 @@
 technical analysis and evaluate strategy with historical prices
 
 ## Index grading
+
+### MA
+弱轉強 / 強轉弱  
+MA - 昨MA > / < 0  
+昨MA - 前MA < / > 0
+
+強/弱  
+MA - 昨MA > / < 0  
+昨MA - 前MA >= / <= 0
+
+中  
+MA - 昨MA = 0
+  
 ### RSI (14)
 RSI值>70：代表市場快速上漲，要評估是否趨勢可能反轉向下、賣出訊號。
 
