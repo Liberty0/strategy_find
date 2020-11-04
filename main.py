@@ -2,7 +2,7 @@
 
 import price_scraper as scr
 import price_analysis as ana
-import invest as inv
+import invest3 as inv
 import plotter
 
 ## Inputs
