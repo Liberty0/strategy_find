@@ -57,6 +57,8 @@ ADX 表趨勢強弱，上升突破25時：
 +DI > -DI： 上升趨勢成形，買進訊號
 -DI < +DI： 下降趨勢成形，賣出訊號
 
+### KD (9)
+
 
 ## Reference
 https://rich01.com/rsi-index-review/

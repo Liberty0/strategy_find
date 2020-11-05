@@ -143,24 +143,42 @@ def analysis(date_price):
         else:
             ADX[i] = ADX[i-1] + (DX[ii] - ADX[i-1])/14
             
-    MA5 = [0] * (len(Closes)-5)
+    # MA
+    MA5 = [0] * (len(Closes)-5+1)
     for i in range(0,len(MA5)):
-        ii = i + 5
-        MA5[i] = sum(Closes[(ii-5):ii])/5
+        ii = i + 5-1
+        MA5[i] = sum(Closes[(ii-5+1):(ii+1)])/5
         
-    MA10 = [0] * (len(Closes)-10)
+    MA10 = [0] * (len(Closes)-10+1)
     for i in range(0,len(MA10)):
-        ii = i + 10
-        MA10[i] = sum(Closes[(ii-10):ii])/10
+        ii = i + 10-1
+        MA10[i] = sum(Closes[(ii-10+1):(ii+1)])/10
         
-    MA20 = [0] * (len(Closes)-20)
+    MA20 = [0] * (len(Closes)-20+1)
     for i in range(0,len(MA20)):
-        ii = i + 20
-        MA20[i] = sum(Closes[(ii-20):ii])/20
-
-
+        ii = i + 20-1
+        MA20[i] = sum(Closes[(ii-20+1):(ii+1)])/20
         
+    # KD (9)
+    # ----index fit----
+    # Closes 0123456789
+    # RSV(3)   01234567
+    # --------
+    K = [0] * (len(Closes)-9+1)
+    D = [0] * (len(K))
+    for i in range(0,len(K)):
+        ii = i + 9-1
+        RSV = (Closes[ii]-min(Low[(ii-9+1):(ii+1)]))\
+            / (max(High[(ii-9+1):(ii+1)])-min(Low[(ii-9+1):(ii+1)])) * 100
+        if i == 0:
+            K[i] = RSV
+            D[i] = K[i]
+        else:
+            K[i] = (K[i-1]*2 + RSV)/3
+            D[i] = (D[i-1]*2 + K[i])/3
+
+
             
-    return Changes, RSI, DIF, MACD, HIS, pDI, mDI, ADX, MA5, MA10, MA20
+    return Changes, RSI, DIF, MACD, HIS, pDI, mDI, ADX, MA5, MA10, MA20, K, D
 # if __name__ == "__main__":
     

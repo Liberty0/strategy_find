@@ -20,13 +20,15 @@ def plotter(Tick,date_price,analysis,Inv_result):
     MA5 = analysis[8]
     MA10= analysis[9]
     MA20= analysis[10]
+    K = analysis[11]
+    D = analysis[12]
     
     Balance = Inv_result[0]
     Cash = Inv_result[1]
     Inved_value = Inv_result[2]
     
     fig1 = matplotlib.pyplot.figure()
-    ax1 = fig1.add_subplot(411)
+    ax1 = fig1.add_subplot(511)
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax1.plot(Dates[(len(Dates)-1-len(MA20)):(len(Dates)-1)],MA20,'-')
         ax1.plot(Dates[(len(Dates)-1-len(MA10)):(len(Dates)-1)],MA10,'-')
@@ -42,7 +44,7 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax1.plot(x_axis[(len(x_axis)-1-len(MA5)):(len(x_axis)-1)],MA5,'-')
         ax1.plot(Closes,'-')
         # ax1.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
-    ax2 = fig1.add_subplot(412)
+    ax2 = fig1.add_subplot(512)
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax2.plot(Dates[(len(Dates)-1-len(RSI)):(len(Dates)-1)],RSI,'-')
         ax2.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
@@ -51,7 +53,7 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax2.plot(x_axis[(len(x_axis)-1-len(RSI)):(len(x_axis)-1)],RSI,'-')
     
     # fig2 = matplotlib.pyplot.figure()
-    ax3 = fig1.add_subplot(413)
+    ax3 = fig1.add_subplot(513)
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax3.plot(Dates[(len(Dates)-1-len(DIF)):(len(Dates)-1)],DIF,'-')
         ax3.plot(Dates[(len(Dates)-1-len(MACD)):(len(Dates)-1)],MACD,'-')
@@ -73,7 +75,7 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax31 = ax3.twinx()
         ax31.bar(x_axis[(len(x_axis)-1-len(HIS)):(len(x_axis)-1)],HIS,width=HISwidth)
         # ax3.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
-    ax4 = fig1.add_subplot(414)
+    ax4 = fig1.add_subplot(514)
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax4.plot(Dates[(len(Dates)-1-len(pDI)):(len(Dates)-1)],pDI,'-')
         ax4.plot(Dates[(len(Dates)-1-len(mDI)):(len(Dates)-1)],mDI,'-')
@@ -84,17 +86,24 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax4.plot(x_axis[(len(x_axis)-1-len(mDI)):(len(x_axis)-1)],mDI,'-')
         ax4.plot(x_axis[(len(x_axis)-1-len(ADX)):(len(x_axis)-1)],ADX,'-')
         # ax4.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
+    ax15 = fig1.add_subplot(515)
+    if Tick=='d' or Tick=='w' or Tick=='m':
+        ax15.plot(Dates[(len(Dates)-1-len(K)):(len(Dates)-1)],K,'-')
+        ax15.plot(Dates[(len(Dates)-1-len(D)):(len(Dates)-1)],D,'-')
+    elif Tick=='5m' or Tick=='10m' or Tick=='30m':
+        ax15.plot(x_axis[(len(x_axis)-1-len(K)):(len(x_axis)-1)],K,'-')
+        ax15.plot(x_axis[(len(x_axis)-1-len(D)):(len(x_axis)-1)],D,'-')
         
     fig3 = matplotlib.pyplot.figure()
-    ax5 = fig3.add_subplot(211)
+    ax31 = fig3.add_subplot(211)
     if Tick=='d' or Tick=='w' or Tick=='m':
-        ax5.plot(Dates[(len(Dates)-1-len(Inved_value)):(len(Dates)-1)],Inved_value,'-')
-        ax5.plot(Dates[(len(Dates)-1-len(Cash)):(len(Dates)-1)],Cash,'-')
-        ax5.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Balance,'-')
+        ax31.plot(Dates[(len(Dates)-1-len(Inved_value)):(len(Dates)-1)],Inved_value,'-')
+        ax31.plot(Dates[(len(Dates)-1-len(Cash)):(len(Dates)-1)],Cash,'-')
+        ax31.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Balance,'-')
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
-        ax5.plot(Inved_value,'-')
-        ax5.plot(Cash,'-')
-        ax5.plot(Balance,'-')
+        ax31.plot(Inved_value,'-')
+        ax31.plot(Cash,'-')
+        ax31.plot(Balance,'-')
     
     Closes_rate = [0] * len(Closes)
     Balance_rate = [0] * len(Balance)
@@ -102,15 +111,15 @@ def plotter(Tick,date_price,analysis,Inv_result):
         Closes_rate[i] = Closes[i] / Closes[len(Closes)-1-len(Balance)]
     for i in range(0,len(Balance)):
         Balance_rate[i] = Balance[i] / Balance[0]
-    ax6 = fig3.add_subplot(212)
+    ax32 = fig3.add_subplot(212)
     if Tick=='d' or Tick=='w' or Tick=='m':
-        ax6.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Closes_rate[(len(Dates)-1-len(Balance)):(len(Dates)-1)],'C0-',label='Close')
-        ax6.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Balance_rate,'C1-',label='Balance')
+        ax32.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Closes_rate[(len(Dates)-1-len(Balance)):(len(Dates)-1)],'C0-',label='Close')
+        ax32.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Balance_rate,'C1-',label='Balance')
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
-        ax6.plot(Closes_rate[(len(Dates)-1-len(Balance)):(len(Dates)-1)],'C0-',label='Close')
-        ax6.plot(Balance_rate,'C1-',label='Balance')
+        ax32.plot(Closes_rate[(len(Dates)-1-len(Balance)):(len(Dates)-1)],'C0-',label='Close')
+        ax32.plot(Balance_rate,'C1-',label='Balance')
 
-    ax6.legend()
+    ax32.legend()
     # print(Closes[len(Closes)-1])
         
     # matplotlib.pyplot.plot_date(Dates,Closes)

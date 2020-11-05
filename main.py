@@ -2,23 +2,23 @@
 
 import price_scraper as scr
 import price_analysis as ana
-import invest3 as inv
+import invest as inv
 import plotter
 
 ## Inputs
 Market = "TW" # TW or US
-Code = "0050"
+Code = "2330"
 Tick = "30m" # [5m 10m 30m d w m]
 Length = -1
 # Inv_setting
-rsi_weight = 0
+rsi_weight = 1
 macd_weight = 1
 adx_weight = 1
 ma5_wt = 1
 ma10_wt = 1
 ma20_wt = 1
-buy_gauge = 0.9
-sell_gauge = -0.9
+buy_gauge = 1.9
+sell_gauge = -1.9
 inv_rate = 40 / 100
 
 Inv_set = [rsi_weight ,macd_weight, adx_weight,\

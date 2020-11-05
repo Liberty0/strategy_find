@@ -4,7 +4,7 @@ def invest(Closes,analysis,Inv_set):
     # Change = analysis[0]
     RSI = analysis[1]
     # DIF = analysis[2]
-    MACD = analysis[3]
+    # MACD = analysis[3]
     HIS = analysis[4]
     pDI = analysis[5]
     mDI = analysis[6]
