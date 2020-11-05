@@ -29,6 +29,7 @@ RSI值>75
 
 弱:
 25<RSI<45
+
 ---
 
 超賣:
@@ -59,7 +60,18 @@ ADX 表趨勢強弱，上升突破25時：
 
 ### KD (9)
 
+超買: K > 80
+超賣: K < 20
+強: 20<K<80 & K>D & 昨K>昨D
+弱: 20<K<80 & K<D & 昨K<昨D
+黃金交叉: 20<K<80 & K>D & 昨K<昨D
+死亡交叉: 20<K<80 & K<D & 昨K>昨D
+
+**inv 與 inv3 中判讀不同**
+inv: 超買賣 -+.5 | 金死叉 +-1衰減
+inv3:超買賣 -+.5 | 金死叉 +-1 | 強弱 +-.5
+
 
 ## Reference
-https://rich01.com/rsi-index-review/
+https://rich01.com/rsi-index-review/    
 https://rich01.com/what-is-macd-indicator/

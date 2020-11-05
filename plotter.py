@@ -120,6 +120,7 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax32.plot(Balance_rate,'C1-',label='Balance')
 
     ax32.legend()
-    # print(Closes[len(Closes)-1])
+    print('Cloose change:' + str(Closes_rate[len(Closes_rate)-1]))
+    print('Balance change:' + str(Balance_rate[len(Balance_rate)-1]))
         
     # matplotlib.pyplot.plot_date(Dates,Closes)

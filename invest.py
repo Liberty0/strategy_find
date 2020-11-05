@@ -12,7 +12,9 @@ def invest(Closes,analysis,Inv_set):
     MA5 = analysis[8]
     MA10= analysis[9]
     MA20= analysis[10]
-    
+    K = analysis[11]
+    D = analysis[12]
+
     #weight
     rsi_wt = Inv_set[0]
     macd_wt = Inv_set[1]
@@ -20,16 +22,17 @@ def invest(Closes,analysis,Inv_set):
     ma5_wt = Inv_set[3]
     ma10_wt = Inv_set[4]
     ma20_wt = Inv_set[5]
-    buy_gauge = Inv_set[6]
-    sell_gauge = Inv_set[7]
+    KD_wt = Inv_set[6]
+    buy_gauge = Inv_set[7]
+    sell_gauge = Inv_set[8]
     
-    inv_rate = Inv_set[8]
+    inv_rate = Inv_set[9]
     
     ini_balance = 100000
     
     # length of indicators
     ana_child_len = []
-    for i in [1,4,7,10]:
+    for i in [1,4,7,10,11]:
         ana_child_len.append(len(analysis[i]))
     
     Cash = [ini_balance] * min(ana_child_len)
@@ -125,11 +128,30 @@ def invest(Closes,analysis,Inv_set):
         else:
             ma20gd = 0
             
+        # KD
+        kd_i = i + (len(K) - len(Cash))
         
+        if i == 0:
+            kdgd_1 = 0
+        if K[kd_i] >= 80:
+            kdgd = -.5 # 超買
+        elif K[kd_i] <= 20:
+            kdgd = .5 # 超賣
+        elif K[kd_i]>20 and K[kd_i]<80:
+            if K[kd_i] >= D[kd_i] and K[kd_i-1] <= D[kd_i-1]:
+                kdgd = 1 # 黃金交叉
+            elif K[kd_i] >= D[kd_i] and K[kd_i-1] >= D[kd_i-1]:
+                kdgd = -1 # 死亡交叉
+        else:
+            kdgd = kdgd_1 * .8
+        adxgd_1 = adxgd
+                
+                    
         # investor
         # Cls_i = i + (len(Closes) - len(Cash))
         gd = rsigd*rsi_wt + macdgd*macd_wt + adxgd*adx_wt + \
-            ma5gd*ma5_wt + ma10gd*ma10_wt + ma20gd*ma20_wt
+            ma5gd*ma5_wt + ma10gd*ma10_wt + ma20gd*ma20_wt + \
+            kdgd*KD_wt
         
         
         if gd > buy_gauge:
