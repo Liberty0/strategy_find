@@ -6,7 +6,8 @@ This is a temporary script file.
 """
 
 import sys
-from PyQt5 import QtWidgets, uic, QtGui, QtCore
+from PyQt5 import QtWidgets, uic
+# from PyQt5 import QtGui, QtCore
 import os
 # from pyqtgraph import PlotWidget, plot
 # import pyqtgraph as pg
@@ -23,8 +24,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.setWindowTitle("PyQt5 & Matplotlib Example GUI")
         
+        # connect callbacks
         self.pushButton.clicked.connect(self.btn1click)
         self.pushButton_5.clicked.connect(self.btn5click)
+        self.textEdit.textChanged.connect(self.varinput)
 
     def btn1click(self):
         self.pushButton_6.setText("clicked")
@@ -34,9 +37,12 @@ class MainWindow(QtWidgets.QMainWindow):
         y = [1, 2, 3, 4, 5, 6, 9, 8, 7, 0, 10]
         self.MplWidget.canvas.axes.clear()
         self.MplWidget.canvas.axes.plot(x,y)
-        self.MplWidget.canvas.axes.legend(('cosinus', 'sinus'),loc='upper right')
-        self.MplWidget.canvas.axes.set_title('Cosinus - Sinus Signal')
-        self.MplWidget.canvas.draw()           
+        # self.MplWidget.canvas.axes.legend(('cosinus', 'sinus'),loc='upper right')
+        # self.MplWidget.canvas.axes.set_title('Cosinus - Sinus Signal')
+        self.MplWidget.canvas.draw()
+        
+    def varinput(self):
+        self.label.setText(self.textEdit.toPlainText())
 
 # path = os.getcwd()
 # qtCreatorFile = path + os.sep + "ui" + os.sep + "mainwindow.ui"  # ui檔案路徑
