@@ -29,6 +29,9 @@ def invest(Closes,analysis,Inv_set):
     inv_rate = Inv_set[9]
     
     ini_balance = 100000
+    total_score = sum(Inv_set[0:6+1])
+    buy_score = total_score * buy_gauge/100
+    sell_score = total_score * sell_gauge/100
     
     # length of indicators
     ana_child_len = []
@@ -131,8 +134,9 @@ def invest(Closes,analysis,Inv_set):
         # KD
         kd_i = i + (len(K) - len(Cash))
         
-        if i == 0:
+        if i == 1:
             kdgd_1 = 0
+            
         if K[kd_i] >= 80:
             kdgd = -.5 # 超買
         elif K[kd_i] <= 20:
@@ -140,11 +144,11 @@ def invest(Closes,analysis,Inv_set):
         elif K[kd_i]>20 and K[kd_i]<80:
             if K[kd_i] >= D[kd_i] and K[kd_i-1] <= D[kd_i-1]:
                 kdgd = 1 # 黃金交叉
-            elif K[kd_i] >= D[kd_i] and K[kd_i-1] >= D[kd_i-1]:
+            elif K[kd_i] <= D[kd_i] and K[kd_i-1] >= D[kd_i-1]:
                 kdgd = -1 # 死亡交叉
-        else:
-            kdgd = kdgd_1 * .8
-        adxgd_1 = adxgd
+            else:
+                kdgd = kdgd_1 * .8
+        kdgd_1 = kdgd
                 
                     
         # investor
@@ -154,11 +158,11 @@ def invest(Closes,analysis,Inv_set):
             kdgd*KD_wt
         
         
-        if gd > buy_gauge:
+        if gd > buy_score:
             buyamout = Cash[i-1] * inv_rate
             Cash[i] = Cash[i-1] - buyamout
             Inved_amount[i] = Inved_amount[i-1] + buyamout/Closes[Cls_i]
-        elif gd < sell_gauge:
+        elif gd < sell_score:
             sellaoumt = Inved_amount[i-1] * inv_rate
             Cash[i] = Cash[i-1] + sellaoumt*Closes[Cls_i]
             Inved_amount[i] = Inved_amount[i-1] - sellaoumt

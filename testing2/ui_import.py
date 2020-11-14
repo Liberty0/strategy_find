@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Spyder Editor
-
-This is a temporary script file.
-"""
 
 import sys
 from PyQt5 import QtWidgets, uic
@@ -35,6 +29,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def btn5click(self):
         x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         y = [1, 2, 3, 4, 5, 6, 9, 8, 7, 0, 10]
+        # defined in module "mplwidget.py"
         self.MplWidget.canvas.axes.clear()
         self.MplWidget.canvas.axes.plot(x,y)
         # self.MplWidget.canvas.axes.legend(('cosinus', 'sinus'),loc='upper right')

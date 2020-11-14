@@ -25,10 +25,14 @@ def invest(Closes,analysis,Inv_set):
     KD_wt = Inv_set[6]
     buy_gauge = Inv_set[7]
     sell_gauge = Inv_set[8]
-    
     inv_rate = Inv_set[9]
     
     ini_balance = 100000
+    total_score = sum(Inv_set[0:6+1])
+    buy_score = total_score * buy_gauge/100
+    sell_score = total_score * sell_gauge/100
+    
+
     
     # length of indicators
     ana_child_len = []
@@ -143,18 +147,19 @@ def invest(Closes,analysis,Inv_set):
                 else:
                     kdgd = -.5 # 弱
             
-        
+            
         # investor
         Cls_i = i + (len(Closes) - len(Cash))
         gd = rsigd*rsi_wt + macdgd*macd_wt + adxgd*adx_wt + \
             ma5gd*ma5_wt + ma10gd*ma10_wt + ma20gd*ma20_wt + \
             kdgd*KD_wt
+            
         
-        if gd > buy_gauge:
+        if gd > buy_score:
             buyamout = Cash[i-1] * inv_rate
             Cash[i] = Cash[i-1] - buyamout
             Inved_amount[i] = Inved_amount[i-1] + buyamout/Closes[Cls_i]
-        elif gd < sell_gauge:
+        elif gd < sell_score:
             sellaoumt = Inved_amount[i-1] * inv_rate
             Cash[i] = Cash[i-1] + sellaoumt*Closes[Cls_i]
             Inved_amount[i] = Inved_amount[i-1] - sellaoumt
