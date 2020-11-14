@@ -36,7 +36,6 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax1.plot(Dates,Closes,'-')
         ax1.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
-
         # x-axis for the following plots
         x_axis = np.linspace(0,len(Closes),len(Closes)+1)
         ax1.plot(x_axis[(len(x_axis)-1-len(MA20)):(len(x_axis)-1)],MA20,'-')
@@ -44,6 +43,7 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax1.plot(x_axis[(len(x_axis)-1-len(MA5)):(len(x_axis)-1)],MA5,'-')
         ax1.plot(Closes,'-')
         # ax1.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
+        
     ax2 = fig1.add_subplot(512)
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax2.plot(Dates[(len(Dates)-1-len(RSI)):(len(Dates)-1)],RSI,'-')

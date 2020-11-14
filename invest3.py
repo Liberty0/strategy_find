@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-def invest(Closes,analysis,Inv_set):
+def invest(date_price,analysis,Inv_set):
+    
+    Closes = date_price[1]
+
     # Change = analysis[0]
     RSI = analysis[1]
     # DIF = analysis[2]

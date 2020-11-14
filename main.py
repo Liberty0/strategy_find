@@ -28,11 +28,10 @@ Inv_set = [rsi_weight ,macd_weight, adx_weight, ma5_wt, ma10_wt,\
 
 # ---
 date_price = scr.price_scraper(Market, Code, Tick, Length)
-Closes = date_price[1]
 
 analysis = ana.analysis(date_price)
 
-Inv_result = inv.invest(Closes, analysis,Inv_set)
+Inv_result = inv.invest(date_price, analysis,Inv_set)
 
 plotter.plotter(Tick,date_price,analysis,Inv_result)
 
