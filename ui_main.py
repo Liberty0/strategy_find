@@ -3,8 +3,10 @@ import sys
 from PyQt5 import QtWidgets, uic
 # from PyQt5 import QtGui, QtCore
 import os
+# import matplotlib
+import numpy as np
 import price_scraper as scr
-# import price_analysis as ana
+import price_analysis as ana
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self,*args,**kwargs):
@@ -31,23 +33,34 @@ class MainWindow(QtWidgets.QMainWindow):
         # self.pushButton_6.setText("clicked")
         
         symbol = self.symbolEdit.toPlainText()
-        date_price = scr.price_scraper('TW', symbol)
-        # analysis = ana.analysis(date_price)
+        Timetick = self.TimeTick.currentText()
+
+        date_price = scr.price_scraper('TW', symbol, Timetick)
+        analysis = ana.analysis(date_price)
+
+
+        ## plotter
+        Dates = date_price[0]
+        Closes = date_price[1]
+        RSI = analysis[1]
+
         self.MplWidget.canvas.axes.clear()
-        self.MplWidget.canvas.axes.plot(date_price[0],date_price[1])
+        
+        if Timetick=='d' or Timetick=='w' or Timetick=='m':
+            self.MplWidget.canvas.axes.plot(Dates,Closes,'-')
+            self.MplWidget.canvas.axes.plot(Dates[(len(Dates)-1-len(RSI)):(len(Dates)-1)],RSI,'-')
+            # self.MplWidget.canvas.axes.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
+        elif Timetick=='5m' or Timetick=='10m' or Timetick=='30m':
+            x_axis = np.linspace(0,len(Closes),len(Closes)+1)
+            self.MplWidget.canvas.axes.plot(Closes,'-')
+            self.MplWidget.canvas.axes.plot(x_axis[(len(x_axis)-1-len(RSI)):(len(x_axis)-1)],RSI,'-')
+        
+        
         # self.MplWidget.canvas.axes.legend(('cosinus', 'sinus'),loc='upper right')
         # self.MplWidget.canvas.axes.set_title('Cosinus - Sinus Signal')
         self.MplWidget.canvas.draw()
 
     def weight_changed(self):
-        
-        # self.properties.RSIWeight = float(self.weight_RSI.value())
-        # self.properties.MACDWeight = float(self.weight_MACD.value())
-        # self.properties.ADXWeight = float(self.weight_ADX.value())
-        # self.properties.MA5Weight = float(self.weight_MA5.value())
-        # self.properties.MA10Weight = float(self.weight_MA10.value())
-        # self.properties.MA20Weight = float(self.weight_MA20.value())
-        # self.properties.KDWeight = float(self.weight_KD.value())
         
         TotalWeight = \
             float(self.weight_RSI.value())\
