@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-def price_scraper(Market='TW',Code='2330',Tick='5m',Length=-1):
+def price_scraper(Market='TW',Code='2330',Tick='d',Length=-1):
     
     import requests 
     from bs4 import BeautifulSoup
     from datetime import  datetime
+    import re
     # import matplotlib
     import locale
     locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
@@ -20,13 +21,16 @@ def price_scraper(Market='TW',Code='2330',Tick='5m',Length=-1):
         print('Invalid "Market"')
         return -1
     headers = {"User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36'}
+    print('data loading')
     page = requests.get(URL, headers=headers)
+    print('data load')
     soup = BeautifulSoup(page.content, 'html.parser')  
     
     Dates = []
     Closes = []
     High =[]
     Low =[]
+    Volume = []
     
     
     if Market == "US":
@@ -52,12 +56,16 @@ def price_scraper(Market='TW',Code='2330',Tick='5m',Length=-1):
                 High.append(locale.atof(Nums_td[i].get_text()))
             elif (i%6) ==2:
                 Low.append(locale.atof(Nums_td[i].get_text()))
+            elif (i%6) ==4: # didn't confirm
+                Volume.append(locale.atof(Nums_td[i].get_text()))
                 
     elif Market == "TW":
 
         fulltext = soup.get_text() # datetime, open, high, low, close, variation
         sectionsplit = fulltext.split('[')
-        timesplit = sectionsplit[1].split("{")
+        timesplit = re.split('{|},{|}',sectionsplit[1])
+        print('data splited')
+        # timesplit = sectionsplit[1].split("{")
         for i in range(0,len(timesplit)):
             itemsplit = timesplit[i].split(':')
             for j in range(0, len(itemsplit)):
@@ -74,21 +82,22 @@ def price_scraper(Market='TW',Code='2330',Tick='5m',Length=-1):
                     High.append(locale.atof(valuesplit[0]))
                 elif j == 4:
                     Low.append(locale.atof(valuesplit[0]))
-        # print result
+                elif j == 6:
+                    Volume.append(locale.atof(valuesplit[0]))
     
     if not Length == -1:
         Length = min(Length,len(Dates))
         Dates = Dates[(len(Dates)-Length):len(Dates)]
         Closes = Closes[(len(Closes)-Length):len(Closes)]
         
-    return Dates, Closes, High, Low
+    return Dates, Closes, High, Low, Volume
 
 if __name__ == "__main__":
     
     Market = "TW"
     Code = "2330"
     Tick = 'd'
-    Length = 10
+    Length = -1
     result = price_scraper(Market,Code,Tick,Length)
     
     print("length of dates:" + str(len(result[0])))

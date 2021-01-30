@@ -22,13 +22,15 @@ def plotter(Tick,date_price,analysis,Inv_result):
     MA20= analysis[10]
     K = analysis[11]
     D = analysis[12]
+    CCO = analysis[13]
+
     
     Balance = Inv_result[0]
     Cash = Inv_result[1]
     Inved_value = Inv_result[2]
     
     fig1 = matplotlib.pyplot.figure()
-    ax1 = fig1.add_subplot(511)
+    ax1 = fig1.add_subplot(311)
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax1.plot(Dates[(len(Dates)-1-len(MA20)):(len(Dates)-1)],MA20,'-')
         ax1.plot(Dates[(len(Dates)-1-len(MA10)):(len(Dates)-1)],MA10,'-')
@@ -44,7 +46,7 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax1.plot(Closes,'-')
         # ax1.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
         
-    ax2 = fig1.add_subplot(512)
+    ax2 = fig1.add_subplot(312)
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax2.plot(Dates[(len(Dates)-1-len(RSI)):(len(Dates)-1)],RSI,'-')
         ax2.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
@@ -53,7 +55,7 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax2.plot(x_axis[(len(x_axis)-1-len(RSI)):(len(x_axis)-1)],RSI,'-')
     
     # fig2 = matplotlib.pyplot.figure()
-    ax3 = fig1.add_subplot(513)
+    ax3 = fig1.add_subplot(313)
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax3.plot(Dates[(len(Dates)-1-len(DIF)):(len(Dates)-1)],DIF,'-')
         ax3.plot(Dates[(len(Dates)-1-len(MACD)):(len(Dates)-1)],MACD,'-')
@@ -74,25 +76,32 @@ def plotter(Tick,date_price,analysis,Inv_result):
             HISwidth = .7
         ax31 = ax3.twinx()
         ax31.bar(x_axis[(len(x_axis)-1-len(HIS)):(len(x_axis)-1)],HIS,width=HISwidth)
-        # ax3.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
-    ax4 = fig1.add_subplot(514)
+        
+    fig2 = matplotlib.pyplot.figure()
+    ax21 = fig2.add_subplot(311)
     if Tick=='d' or Tick=='w' or Tick=='m':
-        ax4.plot(Dates[(len(Dates)-1-len(pDI)):(len(Dates)-1)],pDI,'-')
-        ax4.plot(Dates[(len(Dates)-1-len(mDI)):(len(Dates)-1)],mDI,'-')
-        ax4.plot(Dates[(len(Dates)-1-len(ADX)):(len(Dates)-1)],ADX,'-')
-        ax4.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
+        ax21.plot(Dates[(len(Dates)-1-len(pDI)):(len(Dates)-1)],pDI,'-')
+        ax21.plot(Dates[(len(Dates)-1-len(mDI)):(len(Dates)-1)],mDI,'-')
+        ax21.plot(Dates[(len(Dates)-1-len(ADX)):(len(Dates)-1)],ADX,'-')
+        ax21.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
-        ax4.plot(x_axis[(len(x_axis)-1-len(pDI)):(len(x_axis)-1)],pDI,'-')
-        ax4.plot(x_axis[(len(x_axis)-1-len(mDI)):(len(x_axis)-1)],mDI,'-')
-        ax4.plot(x_axis[(len(x_axis)-1-len(ADX)):(len(x_axis)-1)],ADX,'-')
-        # ax4.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
-    ax15 = fig1.add_subplot(515)
+        ax21.plot(x_axis[(len(x_axis)-1-len(pDI)):(len(x_axis)-1)],pDI,'-')
+        ax21.plot(x_axis[(len(x_axis)-1-len(mDI)):(len(x_axis)-1)],mDI,'-')
+        ax21.plot(x_axis[(len(x_axis)-1-len(ADX)):(len(x_axis)-1)],ADX,'-')
+        # ax21.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
+    ax22 = fig2.add_subplot(312)
     if Tick=='d' or Tick=='w' or Tick=='m':
-        ax15.plot(Dates[(len(Dates)-1-len(K)):(len(Dates)-1)],K,'-')
-        ax15.plot(Dates[(len(Dates)-1-len(D)):(len(Dates)-1)],D,'-')
+        ax22.plot(Dates[(len(Dates)-1-len(K)):(len(Dates)-1)],K,'-')
+        ax22.plot(Dates[(len(Dates)-1-len(D)):(len(Dates)-1)],D,'-')
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
-        ax15.plot(x_axis[(len(x_axis)-1-len(K)):(len(x_axis)-1)],K,'-')
-        ax15.plot(x_axis[(len(x_axis)-1-len(D)):(len(x_axis)-1)],D,'-')
+        ax22.plot(x_axis[(len(x_axis)-1-len(K)):(len(x_axis)-1)],K,'-')
+        ax22.plot(x_axis[(len(x_axis)-1-len(D)):(len(x_axis)-1)],D,'-')
+    ax23 = fig2.add_subplot(313)
+    if Tick=='d' or Tick=='w' or Tick=='m':
+        ax23.plot(Dates[(len(Dates)-1-len(CCO)):(len(Dates)-1)],CCO,'-')
+        ax23.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
+    elif Tick=='5m' or Tick=='10m' or Tick=='30m':
+        ax23.plot(x_axis[(len(x_axis)-1-len(CCO)):(len(x_axis)-1)],CCO,'-')
         
     fig3 = matplotlib.pyplot.figure()
     ax31 = fig3.add_subplot(211)

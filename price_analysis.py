@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
+import numpy as np
 
 def analysis(date_price):
     # Dates = date_price[0]
     Closes = date_price[1]
     High = date_price[2]
     Low = date_price[3]
+    Volume = date_price[4]
     
     Changes = []
     for i in range(0,len(Closes)-1):
@@ -143,7 +144,7 @@ def analysis(date_price):
         else:
             ADX[i] = ADX[i-1] + (DX[ii] - ADX[i-1])/14
             
-    # MA
+    ## MA
     MA5 = [0] * (len(Closes)-5+1)
     for i in range(0,len(MA5)):
         ii = i + 5-1
@@ -159,26 +160,69 @@ def analysis(date_price):
         ii = i + 20-1
         MA20[i] = sum(Closes[(ii-20+1):(ii+1)])/20
         
-    # KD (9)
+    ## KD (9)
+    n = 9
     # ----index fit----
     # Closes 0123456789
     # RSV(3)   01234567
     # --------
-    K = [0] * (len(Closes)-9+1)
+    K = [0] * (len(Closes)-n+1)
     D = [0] * (len(K))
     for i in range(0,len(K)):
-        ii = i + 9-1
-        RSV = (Closes[ii]-min(Low[(ii-9+1):(ii+1)]))\
-            / (max(High[(ii-9+1):(ii+1)])-min(Low[(ii-9+1):(ii+1)])) * 100
+        ii = i + n-1
+        RSV = (Closes[ii]-min(Low[(ii-n+1):(ii+1)]))\
+            / (max(High[(ii-n+1):(ii+1)])-min(Low[(ii-n+1):(ii+1)])) * 100
         if i == 0:
             K[i] = RSV
             D[i] = K[i]
         else:
             K[i] = (K[i-1]*2 + RSV)/3
             D[i] = (D[i-1]*2 + K[i])/3
-
-
             
-    return Changes, RSI, DIF, MACD, HIS, pDI, mDI, ADX, MA5, MA10, MA20, K, D
+    ## Chaikin - Chaikin Oscillator 蔡金擺動指標
+    n = 3
+    m = 10
+    AD = [0] * (len(Closes))
+    # AD       0123456789
+    # EMADn(3)   01234567
+    # EMADm(5)     012345
+    EMADn = [0] * (len(Closes)-n+1)
+    EMADm = [0] * (len(Closes)-m+1)
+    CCO = [0] * (len(Closes)-m+1)
+    
+    for i in range(0,len(AD)):
+        # current money flow volume
+        CMFV = ((Closes[i]-Low[i])-(High[i]-Closes[i]))/((High[i]-Low[i]))*(Volume[i])
+        # if i == 1:
+        AD[i] = CMFV
+        # else:
+            # AD[i] = AD[i-1] + CMFV
+            
+    for i in range(0,len(EMADn)):
+        ii = i + n - 1
+        if i == 0:
+            EMADn[i] = np.average(AD[(ii-n+1):ii])
+        else:
+            EMADn[i] = ((n-1)*EMADn[i-1] + AD[ii])/n
+        print(EMADn[i])
+            
+    for i in range(0,len(EMADm)):
+        ii = i + m - 1
+        if i == 0:
+            EMADm[i] = np.average(AD[(ii-m+1):ii])
+        else:
+            EMADm[i] = ((m-1)*EMADm[i-1] + AD[ii])/m
+        CCO[i] = EMADn[i+m-n] - EMADm[i]
+            
+    # for i in range(0,len(CCO)):
+    #     ii = i + m - 1
+        
+    #     # Chaikin = EMA(A/D, n) - EMA(A/D,m)
+    #     #  EMA: exponential moving average
+    #     CCO[i] = np.average(AD[(ii-n+1):(ii+1)]) - np.average(AD[(ii-m+1):(ii+1)]);
+
+        
+        
+    return Changes, RSI, DIF, MACD, HIS, pDI, mDI, ADX, MA5, MA10, MA20, K, D, CCO
 # if __name__ == "__main__":
     

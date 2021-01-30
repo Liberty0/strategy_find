@@ -17,6 +17,7 @@ def invest(date_price,analysis,Inv_set):
     MA20= analysis[10]
     K = analysis[11]
     D = analysis[12]
+    CCO = analysis[13]
 
     #weight
     rsi_wt = Inv_set[0]
