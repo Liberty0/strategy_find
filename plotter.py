@@ -29,7 +29,7 @@ def plotter(Tick,date_price,analysis,Inv_result):
     Cash = Inv_result[1]
     Inved_value = Inv_result[2]
     
-    fig1 = matplotlib.pyplot.figure()
+    fig1 = matplotlib.pyplot.figure(figsize=(15,10))
     ax1 = fig1.add_subplot(311)
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax1.plot(Dates[(len(Dates)-1-len(MA20)):(len(Dates)-1)],MA20,'-')
@@ -47,6 +47,7 @@ def plotter(Tick,date_price,analysis,Inv_result):
         # ax1.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
         
     ax2 = fig1.add_subplot(312)
+    ax2.set_title("RSI")
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax2.plot(Dates[(len(Dates)-1-len(RSI)):(len(Dates)-1)],RSI,'-')
         ax2.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
@@ -56,6 +57,7 @@ def plotter(Tick,date_price,analysis,Inv_result):
     
     # fig2 = matplotlib.pyplot.figure()
     ax3 = fig1.add_subplot(313)
+    ax3.set_title("MACD")
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax3.plot(Dates[(len(Dates)-1-len(DIF)):(len(Dates)-1)],DIF,'-')
         ax3.plot(Dates[(len(Dates)-1-len(MACD)):(len(Dates)-1)],MACD,'-')
@@ -77,8 +79,9 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax31 = ax3.twinx()
         ax31.bar(x_axis[(len(x_axis)-1-len(HIS)):(len(x_axis)-1)],HIS,width=HISwidth)
         
-    fig2 = matplotlib.pyplot.figure()
+    fig2 = matplotlib.pyplot.figure(figsize=(15,10))
     ax21 = fig2.add_subplot(311)
+    ax21.set_title("ADX")
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax21.plot(Dates[(len(Dates)-1-len(pDI)):(len(Dates)-1)],pDI,'-')
         ax21.plot(Dates[(len(Dates)-1-len(mDI)):(len(Dates)-1)],mDI,'-')
@@ -90,6 +93,7 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax21.plot(x_axis[(len(x_axis)-1-len(ADX)):(len(x_axis)-1)],ADX,'-')
         # ax21.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
     ax22 = fig2.add_subplot(312)
+    ax22.set_title("KD")
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax22.plot(Dates[(len(Dates)-1-len(K)):(len(Dates)-1)],K,'-')
         ax22.plot(Dates[(len(Dates)-1-len(D)):(len(Dates)-1)],D,'-')
@@ -97,13 +101,14 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax22.plot(x_axis[(len(x_axis)-1-len(K)):(len(x_axis)-1)],K,'-')
         ax22.plot(x_axis[(len(x_axis)-1-len(D)):(len(x_axis)-1)],D,'-')
     ax23 = fig2.add_subplot(313)
+    ax23.set_title("CCO")
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax23.plot(Dates[(len(Dates)-1-len(CCO)):(len(Dates)-1)],CCO,'-')
         ax23.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
         ax23.plot(x_axis[(len(x_axis)-1-len(CCO)):(len(x_axis)-1)],CCO,'-')
         
-    fig3 = matplotlib.pyplot.figure()
+    fig3 = matplotlib.pyplot.figure(figsize=(15,10))
     ax31 = fig3.add_subplot(211)
     if Tick=='d' or Tick=='w' or Tick=='m':
         ax31.plot(Dates[(len(Dates)-1-len(Inved_value)):(len(Dates)-1)],Inved_value,'-')

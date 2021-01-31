@@ -68,7 +68,7 @@ def invest(date_price,analysis,Inv_set):
         
         else:
             rsigd = rsigd_1
-        # rsigd_1 = rsigd * 0.8
+        rsigd_1 = rsigd * 0.8
         
         ## MACD (9,12,26)
         Cls_i = i + (len(Closes) - len(Cash))
@@ -156,7 +156,7 @@ def invest(date_price,analysis,Inv_set):
         kdgd_1 = kdgd
                 
         # CCO
-        CCO_i = i + (len(K) - len(Cash))
+        CCO_i = i + (len(CCO) - len(Cash))
         
         if i == 1:
             CCOgd_1=0
