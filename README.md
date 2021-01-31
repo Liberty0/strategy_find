@@ -54,13 +54,16 @@ ADX 表趨勢強弱，上升突破25時：
 -DI < +DI： 下降趨勢成形，賣出訊號
 
 ### KD (9)
-
 超買: K > 80  
 超賣: K < 20  
 強: 20<K<80 & K>D & 昨K>昨D    
 弱: 20<K<80 & K<D & 昨K<昨D    
 黃金交叉: 20<K<80 & K>D & 昨K<昨D     
 死亡交叉: 20<K<80 & K<D & 昨K>昨D
+
+### 蔡金擺動指標 (CHO)
+背離
+中線交叉
 
 **inv 與 inv3 (三竹) 中判讀不同**    
 inv: 超買賣 -+.5 | 金死叉 +-1衰減　　　　    
@@ -74,10 +77,8 @@ inv3:超買賣 -+.5 | 金死叉 +-1 | 強弱 +-.5
 
 實質上與KD線中RSV相同
 
-### 
-
-
 
 ## Reference
 https://rich01.com/rsi-index-review/    
 https://rich01.com/what-is-macd-indicator/
+http://fxcodebase.com/wiki/index.php/%E8%94%A1%E9%87%91%E6%93%BA%E5%8B%95%E6%8C%87%E6%A8%99_(CHO)

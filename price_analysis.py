@@ -192,7 +192,11 @@ def analysis(date_price):
     
     for i in range(0,len(AD)):
         # current money flow volume
-        CMFV = ((Closes[i]-Low[i])-(High[i]-Closes[i]))/((High[i]-Low[i]))*(Volume[i])
+        
+        if High[i]-Low[i]==0:
+            CMFV = 0
+        else:
+            CMFV = ((Closes[i]-Low[i])-(High[i]-Closes[i]))/((High[i]-Low[i]))*(Volume[i])
         # if i == 1:
         AD[i] = CMFV
         # else:
@@ -204,7 +208,6 @@ def analysis(date_price):
             EMADn[i] = np.average(AD[(ii-n+1):ii])
         else:
             EMADn[i] = ((n-1)*EMADn[i-1] + AD[ii])/n
-        print(EMADn[i])
             
     for i in range(0,len(EMADm)):
         ii = i + m - 1
