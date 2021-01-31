@@ -39,8 +39,9 @@ def invest(date_price,analysis,Inv_set):
     sell_score = total_score * sell_gauge/100
     
     # length of indicators
+    # print(len(analysis))
     ana_child_len = []
-    for i in [1,4,7,10,11]:
+    for i in range(0,len(analysis)):
         ana_child_len.append(len(analysis[i]))
     
     Cash = [ini_balance] * min(ana_child_len)

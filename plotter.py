@@ -130,8 +130,9 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax32.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Closes_rate[(len(Dates)-1-len(Balance)):(len(Dates)-1)],'C0-',label='Close')
         ax32.plot(Dates[(len(Dates)-1-len(Balance)):(len(Dates)-1)],Balance_rate,'C1-',label='Balance')
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
-        ax32.plot(Closes_rate[(len(Dates)-1-len(Balance)):(len(Dates)-1)],'C0-',label='Close')
-        ax32.plot(Balance_rate,'C1-',label='Balance')
+        # x_axis[(len(x_axis)-1-len(K)):(len(x_axis)-1)]
+        ax32.plot(x_axis[(len(x_axis)-1-len(Closes_rate)):(len(x_axis)-1)],Closes_rate,'C0-',label='Close')
+        ax32.plot(x_axis[(len(x_axis)-1-len(Balance_rate)):(len(x_axis)-1)],Balance_rate,'C1-',label='Balance')
 
     ax32.legend()
     print('Close change:' + str(Closes_rate[len(Closes_rate)-1]))
