@@ -8,17 +8,17 @@ import plotter
 ## Inputs
 Market = "TW" # TW or US
 Code = "2330"
-Tick = "30m" # [5m 10m 30m d w m]
+Tick = "d" # [5m 10m 30m d w m]
 Length = -1 # -1: full length
 # Inv_setting
 # 權重 & 衰減係數
 rsi_weight = 0
 macd_weight = 0
-adx_weight = 0
+adx_weight = 3
 ma5_wt = 1
 ma10_wt = 1
 ma20_wt = 1
-KD_wt = 1
+KD_wt = 3
 KD_dp = 0.8
 CCO_wt = 0
 

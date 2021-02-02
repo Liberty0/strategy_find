@@ -1,7 +1,21 @@
 # -*- coding: utf-8 -*-
 
 import matplotlib
+# from matplotlib.dates import bytespdate2num, num2date
+# from matplotlib.ticker import Formatter
 import numpy as np
+
+# def MyFormatter(Formatter):
+#     def __init__(self,dates,fmt='%Y-%m-%d'):
+#         self.dates = dates
+#         self.fmt = fmt
+    
+#     def __call__(self,x,pos=0):
+#         'Return the label for time x at position pos'
+#         ind = int(np.round(x))
+#         if ind >= len(self.dates) or ind < 0:
+#             return ''
+#         return num2date(self.dates[ind]).strftime(self.fmt)
 
 def plotter(Tick,date_price,analysis,Inv_result):
     Dates = date_price[0]
@@ -23,11 +37,12 @@ def plotter(Tick,date_price,analysis,Inv_result):
     K = analysis[11]
     D = analysis[12]
     CCO = analysis[13]
-
     
     Balance = Inv_result[0]
     Cash = Inv_result[1]
     Inved_value = Inv_result[2]
+    
+    # formatter = MyFormatter(Dates)
     
     fig1 = matplotlib.pyplot.figure(figsize=(15,10))
     ax1 = fig1.add_subplot(311)
@@ -139,3 +154,4 @@ def plotter(Tick,date_price,analysis,Inv_result):
     print('Balance change:' + str(Balance_rate[len(Balance_rate)-1]))
         
     # matplotlib.pyplot.plot_date(Dates,Closes)
+
