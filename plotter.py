@@ -19,6 +19,7 @@ import numpy as np
 
 def plotter(Tick,date_price,analysis,Inv_result):
     Dates = date_price[0]
+    print(Dates)
     Closes = date_price[1]
     # High = date_price[2]
     # Low = date_price[3]
@@ -42,8 +43,23 @@ def plotter(Tick,date_price,analysis,Inv_result):
     Cash = Inv_result[1]
     Inved_value = Inv_result[2]
     
-    # formatter = MyFormatter(Dates)
-    
+    # Costomized x-axis label
+    Cost_axis = [0] * len(Dates)
+    if Tick=='5m' or Tick=='10m':
+        for ii in range(len(Dates)):
+            if Dates[ii].hour == 9 and Dates[ii].minute == 0:
+                Cost_axis[ii] = Dates[ii].strftime('%d.%H')
+            elif Dates[ii].minute == 0:
+                Cost_axis[ii] = Dates[ii].strftime('%H')
+            else:
+                Cost_axis[ii] = ''
+    elif Tick=='30m':
+        for ii in range(len(Dates)):
+            if Dates[ii].hour == 9 and Dates[ii].minute == 0:
+                Cost_axis[ii] = Dates[ii].strftime('%d')
+            else:
+                Cost_axis[ii] = ''
+                
     fig1 = matplotlib.pyplot.figure(figsize=(15,10))
     ax1 = fig1.add_subplot(311)
     if Tick=='d' or Tick=='w' or Tick=='m':
@@ -59,6 +75,8 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax1.plot(x_axis[(len(x_axis)-1-len(MA10)):(len(x_axis)-1)],MA10,'-')
         ax1.plot(x_axis[(len(x_axis)-1-len(MA5)):(len(x_axis)-1)],MA5,'-')
         ax1.plot(Closes,'-')
+        ax1.xaxis.set_ticks(np.arange(0,len(Dates)+1,1.0)) # Show each tick
+        ax1.set_xticklabels(Cost_axis)
         # ax1.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
         
     ax2 = fig1.add_subplot(312)
@@ -69,7 +87,9 @@ def plotter(Tick,date_price,analysis,Inv_result):
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
         # ax2.plot(RSI,'-')
         ax2.plot(x_axis[(len(x_axis)-1-len(RSI)):(len(x_axis)-1)],RSI,'-')
-    
+        ax2.xaxis.set_ticks(np.arange(0,len(Dates)+1,1.0))
+        ax2.set_xticklabels(Cost_axis)
+        
     # fig2 = matplotlib.pyplot.figure()
     ax3 = fig1.add_subplot(313)
     ax3.set_title("MACD")
@@ -93,6 +113,8 @@ def plotter(Tick,date_price,analysis,Inv_result):
             HISwidth = .7
         ax31 = ax3.twinx()
         ax31.bar(x_axis[(len(x_axis)-1-len(HIS)):(len(x_axis)-1)],HIS,width=HISwidth)
+        ax31.xaxis.set_ticks(np.arange(0,len(Dates)+1,1.0))
+        ax31.set_xticklabels(Cost_axis)
         
     fig2 = matplotlib.pyplot.figure(figsize=(15,10))
     ax21 = fig2.add_subplot(311)
@@ -106,7 +128,9 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax21.plot(x_axis[(len(x_axis)-1-len(pDI)):(len(x_axis)-1)],pDI,'-')
         ax21.plot(x_axis[(len(x_axis)-1-len(mDI)):(len(x_axis)-1)],mDI,'-')
         ax21.plot(x_axis[(len(x_axis)-1-len(ADX)):(len(x_axis)-1)],ADX,'-')
-        # ax21.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%H:%M"))
+        ax21.xaxis.set_ticks(np.arange(0,len(Dates)+1,1.0))
+        ax21.set_xticklabels(Cost_axis)
+        
     ax22 = fig2.add_subplot(312)
     ax22.set_title("KD")
     if Tick=='d' or Tick=='w' or Tick=='m':
@@ -115,6 +139,9 @@ def plotter(Tick,date_price,analysis,Inv_result):
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
         ax22.plot(x_axis[(len(x_axis)-1-len(K)):(len(x_axis)-1)],K,'-')
         ax22.plot(x_axis[(len(x_axis)-1-len(D)):(len(x_axis)-1)],D,'-')
+        ax22.xaxis.set_ticks(np.arange(0,len(Dates)+1,1.0))
+        ax22.set_xticklabels(Cost_axis)
+        
     ax23 = fig2.add_subplot(313)
     ax23.set_title("CCO")
     if Tick=='d' or Tick=='w' or Tick=='m':
@@ -122,6 +149,8 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax23.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b %d"))
     elif Tick=='5m' or Tick=='10m' or Tick=='30m':
         ax23.plot(x_axis[(len(x_axis)-1-len(CCO)):(len(x_axis)-1)],CCO,'-')
+        ax23.xaxis.set_ticks(np.arange(0,len(Dates)+1,1.0))
+        ax23.set_xticklabels(Cost_axis)
         
     fig3 = matplotlib.pyplot.figure(figsize=(15,10))
     ax31 = fig3.add_subplot(211)
@@ -133,7 +162,9 @@ def plotter(Tick,date_price,analysis,Inv_result):
         ax31.plot(Inved_value,'-')
         ax31.plot(Cash,'-')
         ax31.plot(Balance,'-')
-    
+        ax31.xaxis.set_ticks(np.arange(0,len(Dates)+1,1.0))
+        ax31.set_xticklabels(Cost_axis)
+        
     Closes_rate = [0] * len(Closes)
     Balance_rate = [0] * len(Balance)
     for i in range(0, len(Closes)):
@@ -148,7 +179,9 @@ def plotter(Tick,date_price,analysis,Inv_result):
         # x_axis[(len(x_axis)-1-len(K)):(len(x_axis)-1)]
         ax32.plot(x_axis[(len(x_axis)-1-len(Closes_rate)):(len(x_axis)-1)],Closes_rate,'C0-',label='Close')
         ax32.plot(x_axis[(len(x_axis)-1-len(Balance_rate)):(len(x_axis)-1)],Balance_rate,'C1-',label='Balance')
-
+        ax32.xaxis.set_ticks(np.arange(0,len(Dates)+1,1.0))
+        ax32.set_xticklabels(Cost_axis)
+        
     ax32.legend()
     print('Close change:' + str(Closes_rate[len(Closes_rate)-1]))
     print('Balance change:' + str(Balance_rate[len(Balance_rate)-1]))
