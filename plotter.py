@@ -19,7 +19,6 @@ import numpy as np
 
 def plotter(Tick,date_price,analysis,Inv_result):
     Dates = date_price[0]
-    print(Dates)
     Closes = date_price[1]
     # High = date_price[2]
     # Low = date_price[3]
