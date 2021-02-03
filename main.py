@@ -2,7 +2,7 @@
 
 import price_scraper as scr
 import price_analysis as ana
-import invest as inv
+import paramfit as parfit
 import plotter
 
 ## Inputs
@@ -39,7 +39,14 @@ date_price = scr.price_scraper(Market, Code, Tick, Length)
 
 analysis = ana.analysis(date_price)
 
-Inv_result = inv.invest(date_price, analysis,Inv_set)
+# Inv_result = inv.invest(date_price, analysis,Inv_set)
 
-plotter.plotter(Tick,date_price,analysis,Inv_result)
+fitresult = parfit.param_fit(date_price, analysis,Inv_set)
+
+Fit_param = fitresult[0]
+Inv_result = fitresult[1]
+print(Fit_param)
+print(Inv_result)
+
+# plotter.plotter(Tick,date_price,analysis,Inv_result)
 
