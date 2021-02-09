@@ -30,8 +30,13 @@ def invest(date_price,analysis,Inv_set):
     CCO_wt = Inv_set[0][7]
     buy_gauge = Inv_set[0][8]
     sell_gauge = Inv_set[0][9]
-    
     inv_rate = Inv_set[0][10]
+    
+    # 分數衰減延遲
+    rsi_dp = Inv_set[1][0]
+    macd_dp = Inv_set[1][1]
+    adx_dp = Inv_set[1][2]
+    KD_dp = Inv_set[1][6]
     
     ini_balance = 100000
     total_score = sum(Inv_set[0][0:6+1])
@@ -70,7 +75,7 @@ def invest(date_price,analysis,Inv_set):
         
         else:
             rsigd = rsigd_1
-        rsigd_1 = rsigd * 0.8
+        rsigd_1 = rsigd * rsi_dp
         
         ## MACD (9,12,26)
         Cls_i = i + (len(Closes) - len(Cash))
@@ -89,7 +94,7 @@ def invest(date_price,analysis,Inv_set):
         elif HIS[macd_i]<0 and HIS[macd_i-1]>0:
             macdgd = -1
         else:
-            macdgd = macdgd_1 *0.8
+            macdgd = macdgd_1 * macd_dp
         macdgd_1 = macdgd
         
         ## ADX
@@ -103,7 +108,7 @@ def invest(date_price,analysis,Inv_set):
             elif (pDI[adx_i]-mDI[adx_i]) < 0:
                 adxgd = -1
         else:
-            adxgd = adxgd_1 * 0.8
+            adxgd = adxgd_1 * adx_dp
         adxgd_1 = adxgd
         
         # MA
@@ -154,7 +159,7 @@ def invest(date_price,analysis,Inv_set):
             elif K[kd_i] <= D[kd_i] and K[kd_i-1] >= D[kd_i-1]:
                 kdgd = -1 # 死亡交叉
             else:
-                kdgd = kdgd_1 * .8 # 訊號衰減
+                kdgd = kdgd_1 * KD_dp # 訊號衰減
         kdgd_1 = kdgd
                 
         # CCO
