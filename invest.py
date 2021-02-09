@@ -35,8 +35,8 @@ def invest(date_price,analysis,Inv_set):
     
     ini_balance = 100000
     total_score = sum(Inv_set[0][0:6+1])
-    buy_score = total_score * buy_gauge/100
-    sell_score = total_score * sell_gauge/100
+    buy_score = buy_gauge/100
+    sell_score = sell_gauge/100
     
     # length of indicators
     # print(len(analysis))
@@ -45,6 +45,7 @@ def invest(date_price,analysis,Inv_set):
         ana_child_len.append(len(analysis[i]))
     
     Cash = [ini_balance] * min(ana_child_len)
+    Grades = []
     Inved_amount = [0] * len(Cash)
     Inved_value = [0] * len(Cash)
     Balance = [ini_balance] * len(Cash)
@@ -83,7 +84,7 @@ def invest(date_price,analysis,Inv_set):
         elif Closes[Cls_i]==min(Closes[0:(Cls_i+1)]) and MACD[macd_i]>MACD[macd_i]:
             macdgd = 2
         # 交差
-        elif HIS[macd_i]>0 and HIS[macd_i-1]<0:
+        elif HIS[macd_i]>0 and HIS[macd_i-1]<0 and macdgd_1<1:
             macdgd = 1
         elif HIS[macd_i]<0 and HIS[macd_i-1]>0:
             macdgd = -1
@@ -167,10 +168,10 @@ def invest(date_price,analysis,Inv_set):
         
         ## investor
         # Cls_i = i + (len(Closes) - len(Cash))
-        gd = rsigd*rsi_wt + macdgd*macd_wt + adxgd*adx_wt + \
+        gd = (rsigd*rsi_wt + macdgd*macd_wt + adxgd*adx_wt + \
             ma5gd*ma5_wt + ma10gd*ma10_wt + ma20gd*ma20_wt + \
-            kdgd*KD_wt + CCOgd*CCO_wt
-        
+            kdgd*KD_wt + CCOgd*CCO_wt)\
+            /total_score
         
         if gd > buy_score:
             buyamout = Cash[i-1] * inv_rate
@@ -186,5 +187,7 @@ def invest(date_price,analysis,Inv_set):
             
         Inved_value[i] = Inved_amount[i] * Closes[Cls_i]
         Balance[i] = Cash[i] + Inved_value[i]
+        Grades.append([gd,rsigd,macdgd,adxgd,ma5gd,ma10gd,ma20gd,kdgd,CCOgd])
+    # print(len(Grades))
             
-    return Balance, Cash, Inved_value
+    return Balance, Cash, Inved_value, Grades
