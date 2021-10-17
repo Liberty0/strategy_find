@@ -36,6 +36,6 @@ def param_fit(date_price, analysis,Inv_set):
     else:
         print('fitting done')
         
-    return Inv_set, Balance_rate_try
+    return Inv_set, Balance_rate_try, Inv_result
     # print(Inv_set)
     # print(Balance_rate_try)

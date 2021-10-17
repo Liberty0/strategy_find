@@ -44,9 +44,10 @@ analysis = ana.analysis(date_price)
 fitresult = parfit.param_fit(date_price, analysis,Inv_set)
 
 Fit_param = fitresult[0]
-Inv_result = fitresult[1]
+Balance_rate_try = fitresult[1]
+Inv_result = fitresult[2]
 print(Fit_param)
-print(Inv_result)
+print(Balance_rate_try)
 
-# plotter.plotter(Tick,date_price,analysis,Inv_result)
+plotter.plotter(Tick,date_price,analysis,Inv_result)
 
