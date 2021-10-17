@@ -30,13 +30,18 @@ def invest(date_price,analysis,Inv_set):
     CCO_wt = Inv_set[0][7]
     buy_gauge = Inv_set[0][8]
     sell_gauge = Inv_set[0][9]
-    
     inv_rate = Inv_set[0][10]
+    
+    # 分數衰減延遲
+    rsi_dp = Inv_set[1][0]
+    macd_dp = Inv_set[1][1]
+    adx_dp = Inv_set[1][2]
+    KD_dp = Inv_set[1][6]
     
     ini_balance = 100000
     total_score = sum(Inv_set[0][0:6+1])
-    buy_score = total_score * buy_gauge/100
-    sell_score = total_score * sell_gauge/100
+    buy_score = buy_gauge/100
+    sell_score = sell_gauge/100
     
     # length of indicators
     # print(len(analysis))
@@ -45,6 +50,7 @@ def invest(date_price,analysis,Inv_set):
         ana_child_len.append(len(analysis[i]))
     
     Cash = [ini_balance] * min(ana_child_len)
+    Grades = []
     Inved_amount = [0] * len(Cash)
     Inved_value = [0] * len(Cash)
     Balance = [ini_balance] * len(Cash)
@@ -69,7 +75,7 @@ def invest(date_price,analysis,Inv_set):
         
         else:
             rsigd = rsigd_1
-        rsigd_1 = rsigd * 0.8
+        rsigd_1 = rsigd * rsi_dp
         
         ## MACD (9,12,26)
         Cls_i = i + (len(Closes) - len(Cash))
@@ -83,12 +89,12 @@ def invest(date_price,analysis,Inv_set):
         elif Closes[Cls_i]==min(Closes[0:(Cls_i+1)]) and MACD[macd_i]>MACD[macd_i]:
             macdgd = 2
         # 交差
-        elif HIS[macd_i]>0 and HIS[macd_i-1]<0:
+        elif HIS[macd_i]>0 and HIS[macd_i-1]<0 and macdgd_1<1:
             macdgd = 1
         elif HIS[macd_i]<0 and HIS[macd_i-1]>0:
             macdgd = -1
         else:
-            macdgd = macdgd_1 *0.8
+            macdgd = macdgd_1 * macd_dp
         macdgd_1 = macdgd
         
         ## ADX
@@ -102,7 +108,7 @@ def invest(date_price,analysis,Inv_set):
             elif (pDI[adx_i]-mDI[adx_i]) < 0:
                 adxgd = -1
         else:
-            adxgd = adxgd_1 * 0.8
+            adxgd = adxgd_1 * adx_dp
         adxgd_1 = adxgd
         
         # MA
@@ -153,7 +159,7 @@ def invest(date_price,analysis,Inv_set):
             elif K[kd_i] <= D[kd_i] and K[kd_i-1] >= D[kd_i-1]:
                 kdgd = -1 # 死亡交叉
             else:
-                kdgd = kdgd_1 * .8 # 訊號衰減
+                kdgd = kdgd_1 * KD_dp # 訊號衰減
         kdgd_1 = kdgd
                 
         # CCO
@@ -167,10 +173,10 @@ def invest(date_price,analysis,Inv_set):
         
         ## investor
         # Cls_i = i + (len(Closes) - len(Cash))
-        gd = rsigd*rsi_wt + macdgd*macd_wt + adxgd*adx_wt + \
+        gd = (rsigd*rsi_wt + macdgd*macd_wt + adxgd*adx_wt + \
             ma5gd*ma5_wt + ma10gd*ma10_wt + ma20gd*ma20_wt + \
-            kdgd*KD_wt + CCOgd*CCO_wt
-        
+            kdgd*KD_wt + CCOgd*CCO_wt)\
+            /total_score
         
         if gd > buy_score:
             buyamout = Cash[i-1] * inv_rate
@@ -186,5 +192,7 @@ def invest(date_price,analysis,Inv_set):
             
         Inved_value[i] = Inved_amount[i] * Closes[Cls_i]
         Balance[i] = Cash[i] + Inved_value[i]
+        Grades.append([gd,rsigd,macdgd,adxgd,ma5gd,ma10gd,ma20gd,kdgd,CCOgd])
+    # print(len(Grades))
             
-    return Balance, Cash, Inved_value
+    return Balance, Cash, Inved_value, Grades
